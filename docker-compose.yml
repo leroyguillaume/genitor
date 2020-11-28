@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  broker:
+    build:
+      context: docker/kafka
+      target: kafka
+    environment:
+      ZOOKEEPER_CONNECT: zookeeper:2181
+  zookeeper:
+    build:
+      context: docker/kafka
+      target: zookeeper
