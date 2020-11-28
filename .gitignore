@@ -5,3 +5,9 @@ build
 # JetBrains
 .idea
 *.iml
+
+# SSL
+*.cert
+*.csr
+*.key
+*.srl
