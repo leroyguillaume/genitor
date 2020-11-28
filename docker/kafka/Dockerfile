@@ -19,3 +19,4 @@ FROM kafka_base AS kafka
 COPY start-kafka.sh .
 RUN chmod u+x start-kafka.sh
 ENTRYPOINT ./start-kafka.sh
+EXPOSE 9092
