@@ -8,4 +8,4 @@ fun includeModule(name: String) {
 
 rootProject.name = "genitor"
 
-arrayOf("core").forEach { includeModule(it) }
+arrayOf("core", "master").forEach { includeModule(it) }
