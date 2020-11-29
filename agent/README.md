@@ -19,11 +19,11 @@ You can configure agent by:
 - specifying command line arguments as long option (example: `--genitor.hostname=myhostname`;
 - defining environment variable.
 
-|                Property               |          Environment variable         |      Description     | Default value |
-|:-------------------------------------:|:-------------------------------------:|:--------------------:|:-------------:|
-|            genitor.hostname           |                   -                   | Hostname of machine. |   $HOSTNAME   |
-|       genitor.kafka.facts-topic       |       GENITOR_KAFKA_FACTS_TOPIC       | Name of facts topic. |     facts     |
-|       genitor.kafka.ssl.keystore      |       GENITOR_KAFKA_SSL_KEYSTORE      |   Path to keystore.  |       -       |
-|  genitor.kafka.ssl.keystore-password  |  GENITOR_KAFKA_SSL_KEYSTORE_PASSWORD  |  Keystore password.  |       -       |
-|      genitor.kafka.ssl.truststore     |      GENITOR_KAFKA_SSL_TRUSTSTORE     |  Path to truststore. |       -       |
-| genitor.kafka.ssl.truststore-password | GENITOR_KAFKA_SSL_TRUSTSTORE_PASSWORD | Truststore password. |       -       |
+|                Property               |          Environment variable         |          Description         | Default value |
+|:-------------------------------------:|:-------------------------------------:|:----------------------------:|:-------------:|
+|            genitor.hostname           |            GENITOR_HOSTNAME           |     Hostname of this node    |  ${HOSTNAME}  |
+|       genitor.kafka.facts-topic       |     GENITOR_KAFKA_FACTS_TOPIC_NAME    |      Name of facts topic     |     facts     |
+|       genitor.kafka.ssl.keystore      |       GENITOR_KAFKA_SSL_KEYSTORE      |    Path to Kafka keystore    |       -       |
+|  genitor.kafka.ssl.keystore-password  |  GENITOR_KAFKA_SSL_KEYSTORE_PASSWORD  |  Password of Kafka keystore  |       -       |
+|      genitor.kafka.ssl.truststore     |      GENITOR_KAFKA_SSL_TRUSTSTORE     |   Path to Kafka truststore   |       -       |
+| genitor.kafka.ssl.truststore-password | GENITOR_KAFKA_SSL_TRUSTSTORE_PASSWORD | Password of Kafka truststore |       -       |

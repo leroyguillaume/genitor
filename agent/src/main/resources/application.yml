@@ -1,11 +1,17 @@
 genitor:
-  hostname: ${HOSTNAME}
+  # Hostname of this node
+  hostname: ${GENITOR_HOSTNAME:${HOSTNAME}}
   kafka:
-    facts-topic: ${GENITOR_KAFKA_FACTS_TOPIC:facts}
+    # Name of facts topic
+    facts-topic: ${GENITOR_KAFKA_FACTS_TOPIC_NAME:facts}
     ssl:
+      # Path to Kafka keystore
       keystore: ${GENITOR_KAFKA_SSL_KEYSTORE}
+      # Password of Kafka keystore
       keystore-password: ${GENITOR_KAFKA_SSL_KEYSTORE_PASSWORD}
+      # Path to Kafka truststore
       truststore: ${GENITOR_KAFKA_SSL_TRUSTSTORE}
+      # Password of Kafka truststore
       truststore-password: ${GENITOR_KAFKA_SSL_TRUSTSTORE_PASSWORD}
 
 spring:
