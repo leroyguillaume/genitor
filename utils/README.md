@@ -2,7 +2,7 @@
 Tools.
 
 ## generate-markdown-conf-table
-Parse kdoc of `GenitorProperties` class and `application.yml` to generate on `stdout` markdown table.
+Parse `application.yml` to generate on `stdout` markdown table.
 
 Usage: 
 ```
@@ -10,3 +10,4 @@ Usage:
 ```
 Available projects:
 - `master`
+- `agent`

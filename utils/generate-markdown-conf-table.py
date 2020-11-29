@@ -7,23 +7,24 @@
 
 import re
 import sys
-import yaml
-from typing import TextIO, Dict, Hashable, Any, Optional, List
+from typing import TextIO, Dict, Optional, List
 
-PROPERTY_VALUE_PATTERN = re.compile("\\${([A-Z_]+)(:[A-Za-z0-9._/-]+)?}")
-KDOC_PARAM_PATTERN = re.compile("^\\* @param ([A-Za-z]+) (.*)$")
-CAMEL_CASE_PATTERN = re.compile("(?<!^)(?=[A-Z])")
+YAML_COMMENT_PATTERN = re.compile("^ *# (.*)$")
+YAML_PROPERTY_PATTERN = re.compile("^( *)([A-z-]+):(.*)$")
+PROPERTY_VALUE_PATTERN = re.compile("\\${([A-Z_]+)(:(.*)+)?}")
 
 
 class Property:
     name: str
-    default: Optional[str]
+    comment: str
     env_var_name: Optional[str]
+    default: Optional[str]
 
-    def __init__(self, name: str, default: Optional[str], env_var_name: Optional[str] = None):
+    def __init__(self, name: str, comment: str, env_var_name: Optional[str] = None, default: Optional[str] = None):
         self.name = name
-        self.default = default
+        self.comment = comment
         self.env_var_name = env_var_name
+        self.default = default
 
 
 class RowEntry:
@@ -35,7 +36,15 @@ class RowEntry:
         self.length = length
 
 
-def _display_table(properties: List[Property], kdoc_params: Dict[str, str]):
+def _complete_property_name(property_name: str, parents: List[str]) -> str:
+    prefix = '.'.join(parents)
+    if prefix == '':
+        return property_name
+    else:
+        return prefix + '.' + property_name
+
+
+def _display_table(properties: List[Property]):
     property_header = "Property"
     env_var_header = "Environment variable"
     desc_header = "Description"
@@ -45,7 +54,7 @@ def _display_table(properties: List[Property], kdoc_params: Dict[str, str]):
         env_var_header: len(
             max([prop.env_var_name for prop in properties if prop.env_var_name is not None] + [env_var_header], key=len)
         ),
-        desc_header: len(max([desc for desc in kdoc_params.values()] + [desc_header], key=len)),
+        desc_header: len(max([prop.comment for prop in properties] + [desc_header], key=len)),
         default_header: len(
             max([prop.default for prop in properties if prop.default is not None] + [default_header], key=len)
         )
@@ -53,8 +62,14 @@ def _display_table(properties: List[Property], kdoc_params: Dict[str, str]):
     columns_len = [length for header, length in headers.items()]
     _table_headers(headers)
     for prop in properties:
-        desc = [desc for param, desc in kdoc_params.items() if prop.name.endswith(param)][0]
-        _table_prop_row(prop, desc, columns_len)
+        _table_row(
+            [
+                RowEntry(prop.name, columns_len[0]),
+                RowEntry(prop.env_var_name, columns_len[1]),
+                RowEntry(prop.comment, columns_len[2]),
+                RowEntry(prop.default, columns_len[3])
+            ]
+        )
 
 
 def _center(value: str, max_len: int):
@@ -66,49 +81,6 @@ def _center(value: str, max_len: int):
         left_blank = _repeat_string(" ", int(blank_nb / 2 + 1))
         right_blank = _repeat_string(" ", int(blank_nb / 2))
     return left_blank + value + right_blank
-
-
-def _flat(properties: Dict[Hashable, Any], parent: Optional[str] = None) -> List[Property]:
-    flatten_properties = []
-    for property_name, property_value in properties.items():
-        if parent is None:
-            flatten_property_name = property_name
-        else:
-            flatten_property_name = parent + '.' + property_name
-        if flatten_property_name.startswith('genitor'):
-            if type(property_value) is dict:
-                flatten_properties += _flat(property_value, flatten_property_name)
-            elif type(property_value) is str:
-                matcher = PROPERTY_VALUE_PATTERN.match(property_value)
-                if matcher is None:
-                    flatten_properties.append(Property(flatten_property_name, property_value))
-                else:
-                    groups = matcher.groups()
-                    env_var_name = groups[0]
-                    default_value = groups[1]
-                    if default_value is None:
-                        if env_var_name == 'HOSTNAME':
-                            flatten_properties.append(Property(flatten_property_name, '$HOSTNAME', None))
-                        else:
-                            flatten_properties.append(Property(flatten_property_name, None, env_var_name))
-                    else:
-                        flatten_properties.append(Property(flatten_property_name, default_value[1:], env_var_name))
-            else:
-                flatten_properties.append(Property(flatten_property_name, str(property_value)))
-    return flatten_properties
-
-
-def _kebab_case(var: str) -> str:
-    return CAMEL_CASE_PATTERN.sub('-', var).lower()
-
-
-def _kdoc_params(file: TextIO) -> Dict[str, str]:
-    kdoc_params = {}
-    for line in file.readlines():
-        matcher = KDOC_PARAM_PATTERN.match(line.strip())
-        if matcher is not None:
-            kdoc_params[_kebab_case(matcher.group(1))] = matcher.group(2)
-    return kdoc_params
 
 
 def _repeat_string(string: str, nb: int) -> str:
@@ -127,17 +99,6 @@ def _table_headers(headers: Dict[str, int]):
     print(dash_string[:-1])
 
 
-def _table_prop_row(prop: Property, desc: str, columns_len: List[int]):
-    _table_row(
-        [
-            RowEntry(prop.name, columns_len[0]),
-            RowEntry(prop.env_var_name, columns_len[1]),
-            RowEntry(desc, columns_len[2]),
-            RowEntry(prop.default, columns_len[3])
-        ]
-    )
-
-
 def _table_row(row: List[RowEntry]):
     row_string = "| "
     for entry in row:
@@ -149,17 +110,55 @@ def _table_row(row: List[RowEntry]):
     print(row_string[:-1])
 
 
+def _read_yaml(file: TextIO) -> List[Property]:
+    parents: List[str] = []
+    last_comment: Optional[str] = None
+    properties: List[Property] = []
+    for line in file.readlines():
+        if len(parents) == 0 or parents[0] == 'genitor':
+            comment_matcher = YAML_COMMENT_PATTERN.match(line)
+            if comment_matcher is not None:
+                last_comment = comment_matcher.group(1)
+            else:
+                property_matcher = YAML_PROPERTY_PATTERN.match(line)
+                if property_matcher is not None:
+                    indentation = property_matcher.group(1)
+                    property_name = property_matcher.group(2)
+                    property_value = property_matcher.group(3).strip()
+                    diff = int(len(parents) - len(indentation) / 2)
+                    if diff > 0:
+                        parents = parents[0:(len(parents) - diff)]
+                    if property_value == '':
+                        parents.append(property_name)
+                    else:
+                        complete_property_name = _complete_property_name(property_name, parents)
+                        property_value_matcher = PROPERTY_VALUE_PATTERN.match(property_value)
+                        if property_value_matcher is None:
+                            print('WARN: ' + complete_property_name + ' is invalid', file=sys.stderr)
+                        elif last_comment is None:
+                            print('WARN: ' + complete_property_name + ' has no comment', file=sys.stderr)
+                        else:
+                            env_var_name = property_value_matcher.group(1)
+                            default_value = property_value_matcher.group(2)
+                            if default_value is not None:
+                                default_value = default_value[1:]
+                            properties.append(
+                                Property(complete_property_name, last_comment, env_var_name, default_value)
+                            )
+    return properties
+
+
 def main():
     for project_name in sys.argv[1:]:
-        print(project_name)
+        stars = _repeat_string('*', len(project_name) + 4)
+        print(stars)
+        print('* ' + project_name + ' *')
+        print(stars)
         application_yaml_filepath = project_name + "/src/main/resources/application.yml"
-        class_filepath = project_name + "/src/main/kotlin/tech/genitor/" + project_name + "/GenitorProperties.kt"
 
-        with (open(application_yaml_filepath)) as application_yaml_file:
-            properties = _flat(yaml.load(application_yaml_file, Loader=yaml.FullLoader))
-        with (open(class_filepath)) as class_file:
-            kdoc_params = _kdoc_params(class_file)
-        _display_table(properties, kdoc_params)
+        with open(application_yaml_filepath) as application_yaml_file:
+            properties = _read_yaml(application_yaml_file)
+            _display_table(properties)
         print()
 
 
