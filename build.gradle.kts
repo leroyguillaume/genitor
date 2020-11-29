@@ -26,6 +26,15 @@ allprojects {
         args("--spring.profiles.active=dev")
     }
 
+    tasks.withType<Jar> {
+        manifest {
+            attributes(
+                "Implementation-Title" to project.name,
+                "Implementation-Version" to project.version
+            )
+        }
+    }
+
     tasks.withType<KotlinCompile> {
         kotlinOptions {
             jvmTarget = JavaVersion.VERSION_1_8.toString()
