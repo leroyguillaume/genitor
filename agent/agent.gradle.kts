@@ -17,9 +17,15 @@ application {
 }
 
 dependencies {
+    val rootProjectName = rootProject.name
+
     /***********************
      * Implementation
      ***********************/
+
+    // Genitor
+    implementation(project(":$rootProjectName-core"))
+    implementation(project(":$rootProjectName-dto"))
 
     // Kotlin
     implementation(kotlin("stdlib-jdk8"))
