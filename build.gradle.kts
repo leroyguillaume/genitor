@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
 
 plugins {
@@ -21,6 +22,10 @@ allprojects {
         mavenCentral()
     }
 
+    tasks.withType<BootJar> {
+        archiveClassifier.set("fatjar")
+    }
+
     tasks.withType<BootRun> {
         workingDir(rootProject.projectDir)
         args("--spring.profiles.active=dev")
@@ -39,6 +44,11 @@ allprojects {
         kotlinOptions {
             jvmTarget = JavaVersion.VERSION_1_8.toString()
         }
+    }
+
+    tasks.withType<Tar> {
+        compression = Compression.GZIP
+        archiveExtension.set("tar.gz")
     }
 
     tasks.withType<Test> {

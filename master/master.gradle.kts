@@ -1,4 +1,8 @@
 plugins {
+    // Gradle
+    application
+    distribution
+
     // Kotlin
     kotlin("jvm")
     kotlin("plugin.spring")
@@ -6,6 +10,10 @@ plugins {
     // Spring
     id("org.springframework.boot")
     id("io.spring.dependency-management")
+}
+
+application {
+    mainClassName = "tech.genitor.server.GenitorServerKt"
 }
 
 dependencies {
@@ -27,4 +35,10 @@ dependencies {
 
     // Spring
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+}
+
+tasks {
+    jar {
+        enabled = true
+    }
 }
