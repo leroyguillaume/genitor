@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="Master" type="SpringBootApplicationConfigurationType"
+                   factoryName="Spring Boot">
+        <module name="genitor.genitor-master.main"/>
+        <option name="SPRING_BOOT_MAIN_CLASS" value="tech.genitor.master.GenitorMaster"/>
+        <option name="ACTIVE_PROFILES" value="dev"/>
+        <option name="ALTERNATIVE_JRE_PATH"/>
+        <method v="2">
+            <option name="Make" enabled="true"/>
+        </method>
+    </configuration>
+</component>
