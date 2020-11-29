@@ -17,11 +17,11 @@ data class GenitorProperties(
     /**
      * Kafka properties.
      *
-     * @param factsTopic Name of facts topic.
+     * @param factsTopic Facts topic configuration.
      * @param ssl SSL configuration.
      */
     data class Kafka(
-        val factsTopic: String,
+        val factsTopic: Topic,
         val ssl: Ssl
     ) {
         /**
@@ -37,6 +37,19 @@ data class GenitorProperties(
             val keystorePassword: String,
             val truststore: Path,
             val truststorePassword: String
+        )
+
+        /**
+         * Kafka topic configuration.
+         *
+         * @param name Name.
+         * @param partitions Number of partitions.
+         * @param replicas Number of replicas.
+         */
+        data class Topic(
+            val name: String,
+            val partitions: Int,
+            val replicas: Int
         )
     }
 }

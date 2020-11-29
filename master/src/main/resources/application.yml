@@ -1,6 +1,9 @@
 genitor:
   kafka:
-    facts-topic: ${GENITOR_KAFKA_FACTS_TOPIC:facts}
+    facts-topic:
+      name: ${GENITOR_KAFKA_FACTS_TOPIC_NAME:facts}
+      partitions: ${GENITOR_KAFKA_FACTS_TOPIC_PARTITIONS:1}
+      replicas: ${GENITOR_KAFKA_FACTS_TOPIC_REPLICAS:1}
     ssl:
       keystore: ${GENITOR_KAFKA_SSL_KEYSTORE}
       keystore-password: ${GENITOR_KAFKA_SSL_KEYSTORE_PASSWORD}

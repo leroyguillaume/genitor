@@ -13,7 +13,7 @@ class KafkaFactsConsumer : FactsConsumer {
         private val Logger = LoggerFactory.getLogger(KafkaFactsConsumer::class.java)
     }
 
-    @KafkaListener(topics = ["\${genitor.kafka.facts-topic}"])
+    @KafkaListener(topics = ["\${genitor.kafka.facts-topic.name}"])
     override fun consume(factsJson: String) {
         Logger.info(factsJson)
     }
