@@ -8,12 +8,14 @@ import java.nio.file.Path
  * Genitor properties.
  *
  * @param hostname Hostname of machine.
+ * @param collectFactsEvery Number of minutes between two facts collection.
  * @param kafka Kafka properties.
  */
 @ConfigurationProperties(prefix = "genitor")
 @ConstructorBinding
 data class GenitorProperties(
     val hostname: String,
+    val collectFactsEvery: Int,
     val kafka: Kafka
 ) {
     /**
