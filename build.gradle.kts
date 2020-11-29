@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.run.BootRun
 
 plugins {
     val kotlinVersion = "1.4.10"
@@ -18,6 +19,11 @@ allprojects {
 
     repositories {
         mavenCentral()
+    }
+
+    tasks.withType<BootRun> {
+        workingDir(rootProject.projectDir)
+        args("--spring.profiles.active=dev")
     }
 
     tasks.withType<KotlinCompile> {
