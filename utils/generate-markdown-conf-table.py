@@ -7,9 +7,8 @@
 
 import re
 import sys
-from typing import TextIO, Dict, Hashable, Any, Optional, List
-
 import yaml
+from typing import TextIO, Dict, Hashable, Any, Optional, List
 
 PROPERTY_VALUE_PATTERN = re.compile("\\${([A-Z_]+)(:[A-Za-z0-9._/-]+)?}")
 KDOC_PARAM_PATTERN = re.compile("^\\* @param ([A-Za-z]+) (.*)$")
@@ -88,7 +87,10 @@ def _flat(properties: Dict[Hashable, Any], parent: Optional[str] = None) -> List
                     env_var_name = groups[0]
                     default_value = groups[1]
                     if default_value is None:
-                        flatten_properties.append(Property(flatten_property_name, None, env_var_name))
+                        if env_var_name == 'HOSTNAME':
+                            flatten_properties.append(Property(flatten_property_name, '$HOSTNAME', None))
+                        else:
+                            flatten_properties.append(Property(flatten_property_name, None, env_var_name))
                     else:
                         flatten_properties.append(Property(flatten_property_name, default_value[1:], env_var_name))
             else:
