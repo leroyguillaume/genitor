@@ -1,0 +1,7 @@
+genitor:
+  kafka:
+    ssl:
+      keystore: docker/kafka/ssl/kafka.client.keystore.jks
+      keystore-password: changeit
+      truststore: docker/kafka/ssl/kafka.client.truststore.jks
+      truststore-password: changeit

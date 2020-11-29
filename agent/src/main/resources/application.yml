@@ -1,0 +1,23 @@
+genitor:
+  hostname: ${HOSTNAME}
+  kafka:
+    facts-topic: ${GENITOR_KAFKA_FACTS_TOPIC:facts}
+    ssl:
+      keystore: ${GENITOR_KAFKA_SSL_KEYSTORE}
+      keystore-password: ${GENITOR_KAFKA_SSL_KEYSTORE_PASSWORD}
+      truststore: ${GENITOR_KAFKA_SSL_TRUSTSTORE}
+      truststore-password: ${GENITOR_KAFKA_SSL_TRUSTSTORE_PASSWORD}
+
+spring:
+  kafka:
+    bootstrap-servers: ${GENITOR_KAFKA_BOOTSTRAP_SERVERS:localhost:9093}
+    ssl:
+      key-store-location: file:${genitor.kafka.ssl.keystore}
+      key-store-password: ${genitor.kafka.ssl.keystore-password}
+      key-password: ${genitor.kafka.ssl.keystore-password}
+      trust-store-location: file:${genitor.kafka.ssl.truststore}
+      trust-store-password: ${genitor.kafka.ssl.truststore-password}
+    properties:
+      security.protocol: SSL
+      ssl.protocol: SSL
+      ssl.endpoint.identification.algorithm:
