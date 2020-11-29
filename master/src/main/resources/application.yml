@@ -1,13 +1,20 @@
 genitor:
   kafka:
     facts-topic:
+      # Name of facts topic
       name: ${GENITOR_KAFKA_FACTS_TOPIC_NAME:facts}
+      # Number of partitions of facts topic
       partitions: ${GENITOR_KAFKA_FACTS_TOPIC_PARTITIONS:1}
+      # Number of replicas of facts topic
       replicas: ${GENITOR_KAFKA_FACTS_TOPIC_REPLICAS:1}
     ssl:
+      # Path to Kafka keystore
       keystore: ${GENITOR_KAFKA_SSL_KEYSTORE}
+      # Password of Kafka keystore
       keystore-password: ${GENITOR_KAFKA_SSL_KEYSTORE_PASSWORD}
+      # Path to Kafka truststore
       truststore: ${GENITOR_KAFKA_SSL_TRUSTSTORE}
+      # Password of Kafka truststore
       truststore-password: ${GENITOR_KAFKA_SSL_TRUSTSTORE_PASSWORD}
 
 spring:
