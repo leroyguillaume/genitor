@@ -15,7 +15,12 @@ plugins {
 }
 
 allprojects {
-    group = "tech.genitor"
+    val rootGroup = "tech.genitor"
+    group = if (projectDir.parentFile == rootProject.projectDir) {
+        rootGroup
+    } else {
+        "$rootGroup.${projectDir.parentFile.name}"
+    }
     version = "0.1.0"
 
     repositories {
