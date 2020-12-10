@@ -6,17 +6,25 @@ import tech.genitor.core.ResourceGraph
 import tech.genitor.core.ResourceGraphsBuilder
 
 /**
- * Resource graphs builder from ensure block.
+ * Resource graphs builder from ensure blocks.
  *
  * @param node Node.
- * @param ensureBlock Ensure block.
+ * @param ensureBlocks Ensure blocks.
  */
-class DslResourceGraphsBuilder(
+class DslResourceGraphsBuilder internal constructor(
     override val node: Node,
-    private val ensureBlock: EnsureBlock
+    private val ensureBlocks: List<EnsureBlock>
 ) : ResourceGraphsBuilder {
     override fun build(facts: Facts): List<ResourceGraph> {
-        val resourceHolders = ensureBlock.build(facts).resourceHolders
+        val resourceHolders = ensureBlocks.flatMap { it.build(facts).resourceHolders }
         return resourceHolders.map { ResourceGraph(it.resource) }
     }
+
+    /**
+     * Add ensure block.
+     *
+     * @param ensureBlock Ensure block.
+     * @return A copy of this builder with added ensure block.
+     */
+    internal fun addEnsureBlock(ensureBlock: EnsureBlock) = DslResourceGraphsBuilder(node, ensureBlocks + ensureBlock)
 }

@@ -65,7 +65,7 @@ sealed class GroupBlock : InsurableBlock() {
     /**
      * Children.
      */
-    private val children = _children.map { Child(it.value) }
+    internal val children = _children.map { Child(it.value) }
 
     /**
      * Nodes.

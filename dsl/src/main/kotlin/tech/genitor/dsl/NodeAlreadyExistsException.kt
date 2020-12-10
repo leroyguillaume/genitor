@@ -1,7 +1,7 @@
 package tech.genitor.dsl
 
 /**
- * Exception thrown when try to create a nde with the same hostname from another one.
+ * Exception thrown when try to create a node with the same hostname from another one.
  *
  * @param hostname Node hostname.
  */
