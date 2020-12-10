@@ -8,5 +8,5 @@ package tech.genitor.core
  */
 data class ResourceGraph(
     val resource: Resource,
-    val next: List<ResourceGraph>
+    val next: List<ResourceGraph> = emptyList()
 )

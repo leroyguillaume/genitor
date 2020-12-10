@@ -9,7 +9,12 @@ abstract class InsurableBlock {
     /**
      * Ensure block.
      */
-    private lateinit var ensureBlock: EnsureBlock
+    private lateinit var _ensureBlock: EnsureBlock
+
+    /**
+     * Ensure block.
+     */
+    internal val ensureBlock get() = if (this::_ensureBlock.isInitialized) EnsureBlock(_ensureBlock) else null
 
     /**
      * Create ensure block.
@@ -19,9 +24,9 @@ abstract class InsurableBlock {
      */
     @Throws(EnsureBlockAlreadyDefinedException::class)
     fun ensure(block: EnsureBlock.(Facts) -> Unit) {
-        if (this::ensureBlock.isInitialized) {
+        if (this::_ensureBlock.isInitialized) {
             throw EnsureBlockAlreadyDefinedException("Ensure block is already defined for this catalog!")
         }
-        ensureBlock = EnsureBlock(block)
+        _ensureBlock = EnsureBlock(block)
     }
 }

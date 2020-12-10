@@ -5,6 +5,11 @@ package tech.genitor.core
  */
 interface ResourceGraphsBuilder {
     /**
+     * Node.
+     */
+    val node: Node
+
+    /**
      * Build resource graphs from facts.
      *
      * @param facts Facts.
