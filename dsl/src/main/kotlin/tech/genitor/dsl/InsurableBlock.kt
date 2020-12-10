@@ -25,7 +25,7 @@ abstract class InsurableBlock {
     @Throws(EnsureBlockAlreadyDefinedException::class)
     fun ensure(block: EnsureBlock.(Facts) -> Unit) {
         if (this::_ensureBlock.isInitialized) {
-            throw EnsureBlockAlreadyDefinedException("Ensure block is already defined for this catalog!")
+            throw EnsureBlockAlreadyDefinedException()
         }
         _ensureBlock = EnsureBlock(block)
     }
