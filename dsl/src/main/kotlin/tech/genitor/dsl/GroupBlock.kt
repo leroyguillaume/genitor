@@ -4,33 +4,68 @@ import tech.genitor.core.Node
 
 /**
  * Group block.
- *
- * @param name Name.
  */
-class GroupBlock internal constructor(
-    internal val name: String
-) : InsurableBlock() {
+sealed class GroupBlock : InsurableBlock() {
     internal companion object {
+        /**
+         * Root group name.
+         */
+        private const val RootGroupName = "all"
+
         /**
          * Name pattern.
          */
         private val NamePattern = Regex("^([A-Za-z0-9_-]+)$")
+    }
+
+    /**
+     * Root group block.
+     */
+    class Root internal constructor() : GroupBlock() {
+        override val name = RootGroupName
 
         /**
-         * Root group name.
+         * Copy constructor.
+         *
+         * @param groupBlock Group block.
          */
-        internal const val RootGroupName = "all"
+        internal constructor(groupBlock: Root) : this() {
+            copy(groupBlock, this)
+        }
     }
+
+    /**
+     * Child group block.
+     *
+     * @param name Name.
+     */
+    class Child internal constructor(
+        override val name: String
+    ) : GroupBlock() {
+        /**
+         * Copy constructor.
+         *
+         * @param groupBlock Group block.
+         */
+        internal constructor(groupBlock: Child) : this(groupBlock.name) {
+            copy(groupBlock, this)
+        }
+    }
+
+    /**
+     * Name.
+     */
+    internal abstract val name: String
 
     /**
      * Children by their name.
      */
-    private val _children = mutableMapOf<String, GroupBlock>()
+    private val _children = mutableMapOf<String, Child>()
 
     /**
      * Children.
      */
-    private val children = _children.map { GroupBlock(it.value) }
+    private val children = _children.map { Child(it.value) }
 
     /**
      * Nodes.
@@ -41,16 +76,6 @@ class GroupBlock internal constructor(
      * Nodes.
      */
     internal val nodes: Set<Node> = _nodes
-
-    /**
-     * Copy constructor.
-     *
-     * @param groupBlock Group block.
-     */
-    internal constructor(groupBlock: GroupBlock) : this(groupBlock.name) {
-        _nodes.addAll(groupBlock._nodes)
-        _children.putAll(groupBlock._children)
-    }
 
     /**
      * Add nodes.
@@ -77,6 +102,19 @@ class GroupBlock internal constructor(
         if (_children.containsKey(name)) {
             throw GroupAlreadyExistsException(name)
         }
-        _children[name] = GroupBlock(name).apply(block)
+        _children[name] = Child(name).apply(block)
+    }
+
+    /**
+     * Copy group block nodes and children in another one.
+     *
+     * This method modifies target group block. It is not thread safe. The only usage should be factorizing code between
+     * sub-classes copy constructor. Please use it with caution.
+     */
+    protected fun copy(src: GroupBlock, target: GroupBlock) {
+        target._nodes.clear()
+        target._children.clear()
+        target._nodes.addAll(src.nodes)
+        target._children.putAll(src.children.map { it.name to it }.toMap())
     }
 }

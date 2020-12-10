@@ -16,12 +16,12 @@ class CatalogBlock internal constructor() : InsurableBlock() {
     /**
      * Root group block.
      */
-    private val _rootGroupBlock = GroupBlock(GroupBlock.RootGroupName)
+    private val _rootGroupBlock = GroupBlock.Root()
 
     /**
      * Root group block.
      */
-    val rootGroupBlock = GroupBlock(_rootGroupBlock)
+    val rootGroupBlock = GroupBlock.Root(_rootGroupBlock)
 
     /**
      * Node blocks by node hostname.
