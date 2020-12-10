@@ -29,4 +29,16 @@ abstract class InsurableBlock {
         }
         _ensureBlock = EnsureBlock(block)
     }
+
+    /**
+     * Set ensure block.
+     *
+     * This method modifies this block. It is not thread safe. Please use with caution. It should be used only for
+     * copy constructor.
+     *
+     * @param ensureBlock Ensure block.
+     */
+    protected fun setEnsureBlock(ensureBlock: EnsureBlock) {
+        _ensureBlock = ensureBlock
+    }
 }

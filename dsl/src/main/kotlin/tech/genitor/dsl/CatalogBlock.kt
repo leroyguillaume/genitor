@@ -1,5 +1,6 @@
 package tech.genitor.dsl
 
+import tech.genitor.core.Facts
 import tech.genitor.core.Node
 
 /**
@@ -21,7 +22,7 @@ class CatalogBlock internal constructor() : InsurableBlock() {
     /**
      * Root group block.
      */
-    val rootGroupBlock = GroupBlock.Root(_rootGroupBlock)
+    val rootGroupBlock get() = GroupBlock.Root(_rootGroupBlock)
 
     /**
      * Node blocks by node hostname.
@@ -31,7 +32,7 @@ class CatalogBlock internal constructor() : InsurableBlock() {
     /**
      * Node blocks.
      */
-    internal val nodeBlocks = _nodeBlocks.map { NodeBlock(it.value) }
+    internal val nodeBlocks get() = _nodeBlocks.map { NodeBlock(it.value) }
 
     /**
      * Create group.
@@ -50,20 +51,20 @@ class CatalogBlock internal constructor() : InsurableBlock() {
      * Create node.
      *
      * @param hostname Hostname.
-     * @param block Function to build node.
+     * @param block Function to build resources on node.
      * @return Created node.
      * @throws InvalidHostnameException If hostname is invalid.
      * @throws NodeAlreadyExistsException If node already exists.
      */
     @Throws(DslException::class)
-    fun node(hostname: String, block: NodeBlock.() -> Unit = {}): Node {
+    fun node(hostname: String, block: EnsureBlock.(Facts) -> Unit = {}): Node {
         if (!HostnamePattern.matches(hostname)) {
             throw InvalidHostnameException(hostname)
         }
         if (_nodeBlocks.containsKey(hostname)) {
             throw NodeAlreadyExistsException(hostname)
         }
-        val nodeBlock = NodeBlock(hostname).apply(block)
+        val nodeBlock = NodeBlock(hostname).apply { ensure(block) }
         _nodeBlocks[hostname] = nodeBlock
         return nodeBlock.node
     }

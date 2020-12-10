@@ -1,13 +1,22 @@
 package tech.genitor.dsl
 
+import de.swirtz.ktsrunner.objectloader.KtsObjectLoader
 import tech.genitor.core.Node
 import tech.genitor.core.ResourceGraphsBuilder
+import java.nio.file.Files
+import java.nio.file.Path
 
 /**
- * Default implementation of DSL builder.
+ * Default implementation of DSL compiler.
  */
-class DefaultDslBuilder : DslBuilder {
-    override fun build(catalogBlock: CatalogBlock): List<ResourceGraphsBuilder> {
+class DefaultDslCompiler : DslCompiler {
+    /**
+     * Object loader.
+     */
+    private val objectLoader = KtsObjectLoader()
+
+    override fun compile(scriptPath: Path): List<ResourceGraphsBuilder> {
+        val catalogBlock = Files.newBufferedReader(scriptPath).use { objectLoader.load<CatalogBlock>(it) }
         val builderByHostname = builderByHostnameFromGroupBlock(
             groupBlock = catalogBlock.rootGroupBlock,
             builderByHostname = builderByHostnameFromNodeBlocks(catalogBlock.nodeBlocks)
@@ -44,7 +53,7 @@ class DefaultDslBuilder : DslBuilder {
         val ensureBlock = groupBlock.ensureBlock
         val groupBuilderByHostname = if (ensureBlock == null) { // If ensure block is not defined, no change
             builderByHostname
-        } else {                                                        // Else, update map to add it on each node
+        } else {                                                // Else, update map to add it on each node
             val groupBuilderByHostname = groupBlock.allNodes()
                 .map { node ->
                     val builder = builderByHostname[node.hostname] ?: throw UnknownNodeException(node.hostname)

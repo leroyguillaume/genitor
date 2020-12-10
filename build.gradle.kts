@@ -25,6 +25,7 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven("https://dl.bintray.com/s1m0nw1/KtsRunner")
     }
 
     tasks.withType<BootJar> {

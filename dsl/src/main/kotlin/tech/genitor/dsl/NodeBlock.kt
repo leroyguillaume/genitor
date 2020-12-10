@@ -20,5 +20,10 @@ class NodeBlock internal constructor(
      *
      * @param nodeBlock Node block.
      */
-    internal constructor(nodeBlock: NodeBlock) : this(nodeBlock.hostname)
+    internal constructor(nodeBlock: NodeBlock) : this(nodeBlock.hostname) {
+        val ensureBlock = nodeBlock.ensureBlock
+        if (ensureBlock != null) {
+            setEnsureBlock(ensureBlock)
+        }
+    }
 }
