@@ -16,12 +16,22 @@ class CatalogBlock internal constructor() : InsurableBlock() {
     /**
      * Root group block.
      */
-    private val rootGroupBlock = GroupBlock(GroupBlock.RootGroupName)
+    private val _rootGroupBlock = GroupBlock(GroupBlock.RootGroupName)
+
+    /**
+     * Root group block.
+     */
+    val rootGroupBlock = GroupBlock(_rootGroupBlock)
 
     /**
      * Node blocks by node hostname.
      */
     private val _nodeBlocks = mutableMapOf<String, NodeBlock>()
+
+    /**
+     * Node blocks.
+     */
+    internal val nodeBlocks = _nodeBlocks.map { NodeBlock(it.value) }
 
     /**
      * Create group.
@@ -33,7 +43,7 @@ class CatalogBlock internal constructor() : InsurableBlock() {
      */
     @Throws(DslException::class)
     fun group(name: String, block: GroupBlock.() -> Unit) {
-        rootGroupBlock.group(name, block)
+        _rootGroupBlock.group(name, block)
     }
 
     /**

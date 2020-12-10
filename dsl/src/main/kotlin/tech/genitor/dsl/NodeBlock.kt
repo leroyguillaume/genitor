@@ -14,4 +14,11 @@ class NodeBlock internal constructor(
      * Node.
      */
     internal val node = Node(hostname)
+
+    /**
+     * Copy constructor.
+     *
+     * @param nodeBlock Node block.
+     */
+    internal constructor(nodeBlock: NodeBlock) : this(nodeBlock.hostname)
 }

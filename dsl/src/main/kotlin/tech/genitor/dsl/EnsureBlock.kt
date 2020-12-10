@@ -18,7 +18,7 @@ class EnsureBlock internal constructor(
     /**
      * Resource holders.
      */
-    internal val resourceHolders: List<ResourceHolder> = _resourceHolders
+    internal val resourceHolders = _resourceHolders.map { ResourceHolder(it) }
 
     /**
      * Copy constructor.
@@ -26,6 +26,15 @@ class EnsureBlock internal constructor(
      * @param ensureBlock Ensure block to copy.
      */
     internal constructor(ensureBlock: EnsureBlock) : this(ensureBlock.fn)
+
+    /**
+     * Add resource holder.
+     *
+     * @param resourceHolder Resource holder.
+     */
+    fun add(resourceHolder: ResourceHolder) {
+        _resourceHolders.add(resourceHolder)
+    }
 
     /**
      * Build resources from fact.

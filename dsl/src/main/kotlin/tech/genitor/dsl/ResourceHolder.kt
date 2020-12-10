@@ -9,4 +9,11 @@ import tech.genitor.core.Resource
  */
 class ResourceHolder(
     internal val resource: Resource
-)
+) {
+    /**
+     * Copy constructor.
+     *
+     * @param resourceHolder Resource holder.
+     */
+    constructor(resourceHolder: ResourceHolder) : this(resourceHolder.resource)
+}

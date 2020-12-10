@@ -19,7 +19,7 @@ class GroupBlock internal constructor(
         /**
          * Root group name.
          */
-        internal val RootGroupName = "all"
+        internal const val RootGroupName = "all"
     }
 
     /**
@@ -28,9 +28,29 @@ class GroupBlock internal constructor(
     private val _children = mutableMapOf<String, GroupBlock>()
 
     /**
+     * Children.
+     */
+    private val children = _children.map { GroupBlock(it.value) }
+
+    /**
      * Nodes.
      */
     private val _nodes = mutableSetOf<Node>()
+
+    /**
+     * Nodes.
+     */
+    internal val nodes: Set<Node> = _nodes
+
+    /**
+     * Copy constructor.
+     *
+     * @param groupBlock Group block.
+     */
+    internal constructor(groupBlock: GroupBlock) : this(groupBlock.name) {
+        _nodes.addAll(groupBlock._nodes)
+        _children.putAll(groupBlock._children)
+    }
 
     /**
      * Add nodes.
