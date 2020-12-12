@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository
 import tech.genitor.master.FactsColumnName
 import tech.genitor.master.FactsTableName
 import tech.genitor.master.HostnameColumnName
+import tech.genitor.master.LastModificationDateColumnName
 
 /**
  * Default implementation of facts repository.
@@ -29,6 +30,8 @@ class DefaultFactsRepository(
             """
             INSERT INTO $FactsTableName ($HostnameColumnName, $FactsColumnName)
             VALUES (:hostname, :facts::jsonb)
+            ON CONFLICT ($HostnameColumnName)
+            DO UPDATE SET $FactsColumnName = :facts::jsonb, $LastModificationDateColumnName = now()
             """,
             MapSqlParameterSource(mapOf("hostname" to hostname, "facts" to factsJson))
         )
