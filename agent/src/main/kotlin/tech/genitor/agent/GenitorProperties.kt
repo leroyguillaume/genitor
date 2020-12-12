@@ -2,6 +2,7 @@ package tech.genitor.agent
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
+import java.net.InetAddress
 import java.nio.file.Path
 
 /**
@@ -43,4 +44,15 @@ data class GenitorProperties(
             val truststorePassword: String
         )
     }
+
+    /**
+     * Server properties.
+     *
+     * @param bindAddress Bind address.
+     * @param bindPort Bind port.
+     */
+    data class Server(
+        val bindAddress: InetAddress,
+        val bindPort: Int
+    )
 }

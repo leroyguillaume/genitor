@@ -2,18 +2,21 @@ package tech.genitor.master
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
+import java.net.InetAddress
 import java.nio.file.Path
 
 /**
  * Genitor properties.
  *
  * @param deployDir Path to deploy directory.
+ * @param server Server properties.
  * @param kafka Kafka properties.
  */
 @ConfigurationProperties(prefix = "genitor")
 @ConstructorBinding
 data class GenitorProperties(
     val deployDir: Path,
+    val server: Server,
     val kafka: Kafka
 ) {
     /**
@@ -54,4 +57,15 @@ data class GenitorProperties(
             val replicas: Int
         )
     }
+
+    /**
+     * Server properties.
+     *
+     * @param bindAddress Bind address.
+     * @param bindPort Bind port.
+     */
+    data class Server(
+        val bindAddress: InetAddress,
+        val bindPort: Int
+    )
 }

@@ -1,6 +1,22 @@
 genitor:
   # Path to deploy directory
   deploy-dir: ${GENITOR_DEPLOY_DIR:deploy}
+  server:
+    # Server bind address
+    bind-address: ${GENITOR_SERVER_BIND_ADDRESS:127.0.0.1}
+    # Server bind port
+    bind-port: ${GENITOR_SERVER_BIND_PORT:2001}
+  db:
+    # Host of PostgreSQL database
+    host: ${GENITOR_DB_HOST:127.0.0.1}
+    # Port of PostgreSQL database
+    port: ${GENITOR_DB_PORT:5432}
+    # Name of PostgreSQL database
+    name: ${GENITOR_DB_NAME:genitor_master}
+    # Username used to connect to PostgreSQL database
+    username: ${GENITOR_DB_USERNAME:genitor_master}
+    # Password used to connect to PostgreSQL database
+    password: ${GENITOR_DB_PASSWORD:genitor_master}
   kafka:
     facts-topic:
       # Name of facts topic
@@ -19,7 +35,15 @@ genitor:
       # Password of Kafka truststore
       truststore-password: ${GENITOR_KAFKA_SSL_TRUSTSTORE_PASSWORD}
 
+server:
+  address: ${genitor.server.bind-address}
+  port: ${genitor.server.bind-port}
+
 spring:
+  datasource:
+    url: jdbc:postgresql://${genitor.db.host}:${genitor.db.port}/${genitor.db.name}
+    username: ${genitor.db.username}
+    password: ${genitor.db.password}
   kafka:
     bootstrap-servers: ${GENITOR_KAFKA_BOOTSTRAP_SERVERS:localhost:9093}
     consumer:
@@ -34,3 +58,5 @@ spring:
       security.protocol: SSL
       ssl.protocol: SSL
       ssl.endpoint.identification.algorithm:
+  liquibase:
+    change-log: classpath:/db/changelog.yml

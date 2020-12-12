@@ -10,6 +10,14 @@ services:
     ports:
       - 9092:9092
       - 9093:9093
+  db:
+    image: postgres:11
+    environment:
+      POSTGRES_DB: genitor_master
+      POSTGRES_USER: genitor_master
+      POSTGRES_PASSWORD: genitor_master
+    ports:
+      - 5432:5432
   zookeeper:
     build:
       context: docker/kafka

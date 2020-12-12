@@ -3,6 +3,11 @@ genitor:
   hostname: ${GENITOR_HOSTNAME:${HOSTNAME}}
   # Number of minutes between two facts collection.
   collect-facts-every: ${GENITOR_COLLECT_FACTS_EVERY:5}
+  server:
+    # Server bind address
+    bind-address: ${GENITOR_SERVER_BIND_ADDRESS:127.0.0.1}
+    # Server bind port
+    bind-port: ${GENITOR_SERVER_BIND_PORT:2010}
   kafka:
     # Name of facts topic
     facts-topic: ${GENITOR_KAFKA_FACTS_TOPIC_NAME:facts}
@@ -15,6 +20,10 @@ genitor:
       truststore: ${GENITOR_KAFKA_SSL_TRUSTSTORE}
       # Password of Kafka truststore
       truststore-password: ${GENITOR_KAFKA_SSL_TRUSTSTORE_PASSWORD}
+
+server:
+  address: ${genitor.server.bind-address}
+  port: ${genitor.server.bind-port}
 
 spring:
   kafka:

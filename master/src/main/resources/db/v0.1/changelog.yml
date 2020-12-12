@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.1
+      author: Guillaume 'Francis' Leroy
+      changes:
+        - sqlFile:
+            path: sql/001-facts.sql
+            splitStatements: false
+            relativeToChangelogFile: true
