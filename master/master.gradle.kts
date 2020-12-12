@@ -25,6 +25,7 @@ dependencies {
 
     // Genitor
     implementation(project(":$rootProjectName-core"))
+    implementation(project(":$rootProjectName-commons-config"))
 
     // Jackson
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

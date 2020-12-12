@@ -4,7 +4,7 @@ import org.apache.kafka.clients.producer.ProducerRecord
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
-import tech.genitor.agent.GenitorProperties
+import tech.genitor.agent.AgentProperties
 import tech.genitor.core.Facts
 
 /**
@@ -19,7 +19,7 @@ class KafkaFactsProducer(
     private val factsSerializer: JsonFactsSerializer,
     @Suppress("SpringJavaInjectionPointsAutowiringInspection")
     private val kafkaTemplate: KafkaTemplate<String, String>,
-    private val props: GenitorProperties
+    private val props: AgentProperties
 ) : FactsProducer {
     private companion object {
         /**

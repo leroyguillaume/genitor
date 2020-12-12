@@ -3,5 +3,5 @@ Core classes.
 
 ## How to build
 ```bash
-./gradlew assemble
+./gradlew :genitor-core:assemble
 ```

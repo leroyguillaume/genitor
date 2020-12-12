@@ -1,34 +1,16 @@
-package tech.genitor.agent
+package tech.genitor.commons.config
 
-import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.boot.context.properties.ConstructorBinding
 import java.net.InetAddress
 import java.nio.file.Path
 
 /**
  * Genitor properties.
- *
- * @param hostname Hostname of machine.
- * @param collectFactsEvery Number of minutes between two facts collection.
- * @param kafka Kafka properties.
  */
-@ConfigurationProperties(prefix = "genitor")
-@ConstructorBinding
-data class GenitorProperties(
-    val hostname: String,
-    val collectFactsEvery: Int,
-    val kafka: Kafka
-) {
+interface GenitorProperties {
     /**
      * Kafka properties.
-     *
-     * @param factsTopic Name of facts topic.
-     * @param ssl SSL configuration.
      */
-    data class Kafka(
-        val factsTopic: String,
-        val ssl: Ssl
-    ) {
+    interface Kafka {
         /**
          * Kafka SSL configuration.
          *
@@ -43,6 +25,11 @@ data class GenitorProperties(
             val truststore: Path,
             val truststorePassword: String
         )
+
+        /**
+         * SSL configuration.
+         */
+        val ssl: Ssl
     }
 
     /**
@@ -55,4 +42,14 @@ data class GenitorProperties(
         val bindAddress: InetAddress,
         val bindPort: Int
     )
+
+    /**
+     * Server properties.
+     */
+    val server: Server
+
+    /**
+     * Kafka properties.
+     */
+    val kafka: Kafka
 }

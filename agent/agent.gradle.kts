@@ -26,6 +26,7 @@ dependencies {
     // Genitor
     implementation(project(":$rootProjectName-core"))
     implementation(project(":$rootProjectName-dto"))
+    implementation(project(":$rootProjectName-commons-config"))
 
     // Kotlin
     implementation(kotlin("stdlib-jdk8"))

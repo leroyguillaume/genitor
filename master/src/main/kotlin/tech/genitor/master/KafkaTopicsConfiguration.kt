@@ -12,7 +12,7 @@ import org.springframework.kafka.config.TopicBuilder
  */
 @Configuration
 class KafkaTopicsConfiguration(
-    private val props: GenitorProperties
+    private val props: MasterProperties
 ) {
     /**
      * Get information about facts topic creation.
@@ -27,7 +27,7 @@ class KafkaTopicsConfiguration(
      *
      * @return Topic creation information.
      */
-    private fun GenitorProperties.Kafka.Topic.toNewTopic() = TopicBuilder
+    private fun MasterProperties.Kafka.Topic.toNewTopic() = TopicBuilder
         .name(name)
         .partitions(partitions)
         .replicas(replicas)

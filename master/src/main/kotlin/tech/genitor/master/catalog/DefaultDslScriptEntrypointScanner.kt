@@ -2,7 +2,7 @@ package tech.genitor.master.catalog
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import tech.genitor.master.GenitorProperties
+import tech.genitor.master.MasterProperties
 import java.nio.file.Files
 import kotlin.streams.toList
 
@@ -13,7 +13,7 @@ import kotlin.streams.toList
  */
 @Component
 class DefaultDslScriptEntrypointScanner(
-    private val props: GenitorProperties
+    private val props: MasterProperties
 ) : DslScriptEntrypointScanner {
     private companion object {
         /**

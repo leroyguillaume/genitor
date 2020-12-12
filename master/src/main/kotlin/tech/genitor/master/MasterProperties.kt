@@ -2,11 +2,11 @@ package tech.genitor.master
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
-import java.net.InetAddress
+import tech.genitor.commons.config.GenitorProperties
 import java.nio.file.Path
 
 /**
- * Genitor properties.
+ * Master properties.
  *
  * @param deployDir Path to deploy directory.
  * @param server Server properties.
@@ -14,11 +14,11 @@ import java.nio.file.Path
  */
 @ConfigurationProperties(prefix = "genitor")
 @ConstructorBinding
-data class GenitorProperties(
+data class MasterProperties(
     val deployDir: Path,
-    val server: Server,
-    val kafka: Kafka
-) {
+    override val server: GenitorProperties.Server,
+    override val kafka: Kafka
+) : GenitorProperties {
     /**
      * Kafka properties.
      *
@@ -27,23 +27,8 @@ data class GenitorProperties(
      */
     data class Kafka(
         val factsTopic: Topic,
-        val ssl: Ssl
-    ) {
-        /**
-         * Kafka SSL configuration.
-         *
-         * @param keystore Path to keystore.
-         * @param keystorePassword Keystore password.
-         * @param truststore Path to truststore.
-         * @param truststorePassword Truststore password.
-         */
-        data class Ssl(
-            val keystore: Path,
-            val keystorePassword: String,
-            val truststore: Path,
-            val truststorePassword: String
-        )
-
+        override val ssl: GenitorProperties.Kafka.Ssl
+    ) : GenitorProperties.Kafka {
         /**
          * Kafka topic configuration.
          *
@@ -57,15 +42,4 @@ data class GenitorProperties(
             val replicas: Int
         )
     }
-
-    /**
-     * Server properties.
-     *
-     * @param bindAddress Bind address.
-     * @param bindPort Bind port.
-     */
-    data class Server(
-        val bindAddress: InetAddress,
-        val bindPort: Int
-    )
 }
