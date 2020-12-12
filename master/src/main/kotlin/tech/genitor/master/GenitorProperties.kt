@@ -7,11 +7,13 @@ import java.nio.file.Path
 /**
  * Genitor properties.
  *
+ * @param deployDir Path to deploy directory.
  * @param kafka Kafka properties.
  */
 @ConfigurationProperties(prefix = "genitor")
 @ConstructorBinding
 data class GenitorProperties(
+    val deployDir: Path,
     val kafka: Kafka
 ) {
     /**

@@ -21,6 +21,7 @@ You can configure master by:
 
 |                Property               |          Environment variable         |             Description             | Default value |
 |:-------------------------------------:|:-------------------------------------:|:-----------------------------------:|:-------------:|
+|           genitor.deploy-dir          |           GENITOR_DEPLOY_DIR          |       Path to deploy directory      |     deploy    |
 |     genitor.kafka.facts-topic.name    |     GENITOR_KAFKA_FACTS_TOPIC_NAME    |         Name of facts topic         |     facts     |
 |  genitor.kafka.facts-topic.partitions |  GENITOR_KAFKA_FACTS_TOPIC_PARTITIONS | Number of partitions of facts topic |       1       |
 |   genitor.kafka.facts-topic.replicas  |   GENITOR_KAFKA_FACTS_TOPIC_REPLICAS  |  Number of replicas of facts topic  |       1       |
