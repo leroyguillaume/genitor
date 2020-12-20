@@ -25,6 +25,7 @@ dependencies {
 
     // Genitor
     implementation(project(":$rootProjectName-core"))
+    implementation(project(":$rootProjectName-dto"))
     implementation(project(":$rootProjectName-dsl"))
     implementation(project(":$rootProjectName-commons-config"))
 

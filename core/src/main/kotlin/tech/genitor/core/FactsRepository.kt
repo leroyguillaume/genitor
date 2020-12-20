@@ -5,6 +5,14 @@ package tech.genitor.core
  */
 interface FactsRepository {
     /**
+     * Get facts by node hostname.
+     *
+     * @param hostname Node hostname.
+     * @return Facts of node or null if node does not exist.
+     */
+    fun get(hostname: String): Facts?
+
+    /**
      * Save facts.
      *
      * @param hostname Node hostname.
