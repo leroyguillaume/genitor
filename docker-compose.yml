@@ -1,6 +1,20 @@
 version: '3.4'
 
 services:
+  agent:
+    image: genitor/agent
+    hostname: agent-01
+    environment:
+      GENITOR_PROFILE: dev
+      GENITOR_KAFKA_BOOTSTRAP_SERVERS: broker:9093
+      GENITOR_KAFKA_SSL_KEYSTORE: /etc/ssl/genitor/kafka.client.keystore.jks
+      GENITOR_KAFKA_SSL_KEYSTORE_PASSWORD: changeit
+      GENITOR_KAFKA_SSL_TRUSTSTORE: /etc/ssl/genitor/kafka.client.truststore.jks
+      GENITOR_KAFKA_SSL_TRUSTSTORE_PASSWORD: changeit
+    ports:
+      - 2010:2010
+    volumes:
+      - ./docker/kafka/ssl:/etc/ssl/genitor
   broker:
     build:
       context: docker/kafka
@@ -10,6 +24,22 @@ services:
     ports:
       - 9092:9092
       - 9093:9093
+  master:
+    image: genitor/master
+    depends_on:
+      - db
+    environment:
+      GENITOR_PROFILE: dev
+      GENITOR_DB_HOST: db
+      GENITOR_KAFKA_BOOTSTRAP_SERVERS: broker:9093
+      GENITOR_KAFKA_SSL_KEYSTORE: /etc/ssl/genitor/kafka.client.keystore.jks
+      GENITOR_KAFKA_SSL_KEYSTORE_PASSWORD: changeit
+      GENITOR_KAFKA_SSL_TRUSTSTORE: /etc/ssl/genitor/kafka.client.truststore.jks
+      GENITOR_KAFKA_SSL_TRUSTSTORE_PASSWORD: changeit
+    ports:
+      - 2001:2001
+    volumes:
+      - ./docker/kafka/ssl:/etc/ssl/genitor
   db:
     image: postgres:11
     environment:

@@ -41,3 +41,8 @@ spring:
       security.protocol: SSL
       ssl.protocol: SSL
       ssl.endpoint.identification.algorithm:
+
+logging:
+  level:
+    root: error
+    tech.genitor: info

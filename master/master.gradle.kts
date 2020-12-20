@@ -65,6 +65,32 @@ dependencies {
 }
 
 tasks {
+    create<Exec>("buildDockerImage") {
+        dependsOn("copyDistTarToDockerDir")
+
+        val rootProjectName = rootProject.name
+        val target = project.name.removePrefix("$rootProjectName-")
+        val tag = "$rootProjectName/$target"
+
+        executable("docker")
+        args(
+            "build",
+            "-t", tag,
+            "-t", "$tag:$version",
+            "--target", target,
+            "--build-arg", "version=$version",
+            "docker/genitor"
+        )
+        workingDir(rootProject.projectDir)
+    }
+
+    create<Copy>("copyDistTarToDockerDir") {
+        dependsOn("distTar")
+
+        from("$buildDir/distributions/${project.name}-$version.tar.gz")
+        into("${rootProject.projectDir}/docker/genitor")
+    }
+
     jar {
         enabled = true
     }

@@ -8,4 +8,5 @@ genitor:
 
 logging:
   level:
+    root: info
     tech.genitor: debug
