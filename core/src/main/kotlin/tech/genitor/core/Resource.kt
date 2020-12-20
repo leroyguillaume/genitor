@@ -5,6 +5,11 @@ package tech.genitor.core
  */
 interface Resource {
     /**
+     * Parameters.
+     */
+    val params: ResourceParams
+
+    /**
      * Ensure resource.
      */
     fun ensure()
