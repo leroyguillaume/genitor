@@ -1,6 +1,6 @@
 genitor:
   # Path to deploy directory
-  deploy-dir: ${GENITOR_DEPLOY_DIR:deploy}
+  deploy-dir: ${GENITOR_DEPLOY_DIR:examples}
   server:
     # Server bind address
     bind-address: ${GENITOR_SERVER_BIND_ADDRESS:127.0.0.1}
