@@ -7,11 +7,12 @@ import org.springframework.stereotype.Component
 import tech.genitor.agent.AgentProperties
 import tech.genitor.core.Facts
 import tech.genitor.core.FactsProducer
+import tech.genitor.core.JsonFactsSerializer
 
 /**
  * Kafka implementation of facts producer.
  *
- * @param factsSerializer JSON facts serializer.
+ * @param factsSerializer Facts serializer.
  * @param kafkaTemplate Kafka template.
  * @param props Properties.
  */

@@ -1,12 +1,13 @@
 package tech.genitor.core
 
 /**
- * Facts serializer.
+ * JSON Facts serializer.
  */
-interface FactsSerializer {
+interface JsonFactsSerializer {
     /**
-     * Serialize facts.
+     * Serialize facts to JSON format.
      *
+     * @param facts Facts.
      * @return Serialized facts.
      */
     fun serialize(facts: Facts): String
