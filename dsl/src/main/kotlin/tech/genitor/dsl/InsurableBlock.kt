@@ -14,7 +14,7 @@ abstract class InsurableBlock {
     /**
      * Ensure block.
      */
-    internal val ensureBlock get() = if (this::_ensureBlock.isInitialized) EnsureBlock(_ensureBlock) else null
+    val ensureBlock get() = if (this::_ensureBlock.isInitialized) EnsureBlock(_ensureBlock) else null
 
     /**
      * Create ensure block.

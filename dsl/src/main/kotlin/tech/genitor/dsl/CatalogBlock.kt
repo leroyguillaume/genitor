@@ -32,7 +32,7 @@ class CatalogBlock internal constructor() : InsurableBlock() {
     /**
      * Node blocks.
      */
-    internal val nodeBlocks get() = _nodeBlocks.map { NodeBlock(it.value) }
+    val nodeBlocks get() = _nodeBlocks.map { NodeBlock(it.value) }
 
     /**
      * Create group.

@@ -8,12 +8,12 @@ import tech.genitor.core.Node
  * @param hostname Hostname.
  */
 class NodeBlock internal constructor(
-    internal val hostname: String
+    val hostname: String
 ) : InsurableBlock() {
     /**
      * Node.
      */
-    internal val node = Node(hostname)
+    val node = Node(hostname)
 
     /**
      * Copy constructor.

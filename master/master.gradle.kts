@@ -13,7 +13,7 @@ plugins {
 }
 
 application {
-    mainClassName = "tech.genitor.server.GenitorServerKt"
+    mainClassName = "tech.genitor.master.GenitorMasterKt"
 }
 
 dependencies {
@@ -25,6 +25,7 @@ dependencies {
 
     // Genitor
     implementation(project(":$rootProjectName-core"))
+    implementation(project(":$rootProjectName-dsl"))
     implementation(project(":$rootProjectName-commons-config"))
 
     // Jackson
@@ -32,7 +33,9 @@ dependencies {
 
     // Kotlin
     implementation(kotlin("stdlib-jdk8"))
-    implementation(kotlin("reflect"))
+
+    // KtsRunner
+    implementation("de.swirtz:ktsRunner:0.0.9")
 
     // Spring
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -42,6 +45,9 @@ dependencies {
     /***********************
      * Runtime
      ***********************/
+
+    // Kotlin
+    runtimeOnly(kotlin("reflect"))
 
     // Liquibase
     runtimeOnly("org.liquibase:liquibase-core")

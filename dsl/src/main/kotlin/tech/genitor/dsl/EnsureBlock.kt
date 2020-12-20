@@ -18,7 +18,7 @@ class EnsureBlock internal constructor(
     /**
      * Resource holders.
      */
-    internal val resourceHolders = _resourceHolders.map { ResourceHolder(it) }
+    val resourceHolders = _resourceHolders.map { ResourceHolder(it) }
 
     /**
      * Copy constructor.
@@ -44,5 +44,5 @@ class EnsureBlock internal constructor(
      * @param facts Node facts.
      * @return Built ensure block.
      */
-    internal fun build(facts: Facts) = EnsureBlock(this).apply { fn(facts) }
+    fun build(facts: Facts) = EnsureBlock(this).apply { fn(facts) }
 }

@@ -1,9 +1,10 @@
-package tech.genitor.dsl
+package tech.genitor.master.catalog
 
 import tech.genitor.core.Facts
 import tech.genitor.core.Node
 import tech.genitor.core.ResourceGraph
 import tech.genitor.core.ResourceGraphsBuilder
+import tech.genitor.dsl.EnsureBlock
 
 /**
  * Resource graphs builder from ensure blocks.

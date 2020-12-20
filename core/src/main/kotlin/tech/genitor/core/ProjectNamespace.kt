@@ -9,6 +9,11 @@ data class ProjectNamespace(
     val names: List<String> = emptyList()
 ) {
     /**
+     * True if this namespace is empty, false otherwise.
+     */
+    val isEmpty = names.isEmpty()
+
+    /**
      * Add name to namespace.
      *
      * @param name Name.

@@ -58,7 +58,8 @@ class DefaultProjectScanner(
                 Project(
                     name = path.fileName.toString(),
                     namespace = namespace,
-                    path = path
+                    path = path,
+                    entrypointScriptPath = entrypointScriptPath
                 )
             )
         } else {

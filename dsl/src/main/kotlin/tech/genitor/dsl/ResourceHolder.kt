@@ -8,7 +8,7 @@ import tech.genitor.core.Resource
  * @param resource Resource.
  */
 class ResourceHolder(
-    internal val resource: Resource
+    val resource: Resource
 ) {
     /**
      * Copy constructor.

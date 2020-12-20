@@ -3,7 +3,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
 
 plugins {
-    val kotlinVersion = "1.4.10"
+    val kotlinVersion = "1.4.21"
 
     // Kotlin
     kotlin("jvm") version kotlinVersion apply false

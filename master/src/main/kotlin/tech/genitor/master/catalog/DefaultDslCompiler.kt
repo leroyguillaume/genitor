@@ -1,14 +1,17 @@
-package tech.genitor.dsl
+package tech.genitor.master.catalog
 
 import de.swirtz.ktsrunner.objectloader.KtsObjectLoader
+import org.springframework.stereotype.Component
 import tech.genitor.core.Node
 import tech.genitor.core.ResourceGraphsBuilder
+import tech.genitor.dsl.*
 import java.nio.file.Files
 import java.nio.file.Path
 
 /**
  * Default implementation of DSL compiler.
  */
+@Component
 class DefaultDslCompiler : DslCompiler {
     /**
      * Object loader.
