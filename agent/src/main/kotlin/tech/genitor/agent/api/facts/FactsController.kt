@@ -3,8 +3,8 @@ package tech.genitor.agent.api.facts
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import tech.genitor.agent.facts.FactsCollector
 import tech.genitor.agent.facts.toDto
+import tech.genitor.core.FactsCollector
 
 /**
  * Facts API.

@@ -4,6 +4,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.stereotype.Component
+import tech.genitor.core.FactsConsumer
+import tech.genitor.core.FactsRepository
 
 /**
  * Kafka implementation of facts consumer.

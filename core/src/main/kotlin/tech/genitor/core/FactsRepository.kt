@@ -1,4 +1,4 @@
-package tech.genitor.master.facts
+package tech.genitor.core
 
 /**
  * Facts repository.

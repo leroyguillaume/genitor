@@ -4,20 +4,16 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import tech.genitor.core.Project
 import tech.genitor.core.ProjectNamespace
-import tech.genitor.master.MasterProperties
+import tech.genitor.core.ProjectScanner
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.streams.toList
 
 /**
  * Default implementation of Genitor project scanner.
- *
- * @param props Properties.
  */
 @Component
-class DefaultProjectScanner(
-    private val props: MasterProperties
-) : ProjectScanner {
+class DefaultProjectScanner : ProjectScanner {
     private companion object {
         /**
          * Name of DSL entrypoint script file.
@@ -35,7 +31,7 @@ class DefaultProjectScanner(
         private val Logger = LoggerFactory.getLogger(DefaultProjectScanner::class.java)
     }
 
-    override fun scan() = Files.list(props.deployDir)
+    override fun scan(dir: Path) = Files.list(dir)
         .filter { Files.isDirectory(it) }
         .toList()
         .flatMap { scan(it, ProjectNamespace()) }

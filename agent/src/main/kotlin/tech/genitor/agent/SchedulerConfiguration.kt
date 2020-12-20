@@ -3,8 +3,8 @@ package tech.genitor.agent
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.Scheduled
-import tech.genitor.agent.facts.FactsCollector
-import tech.genitor.agent.facts.FactsProducer
+import tech.genitor.core.FactsCollector
+import tech.genitor.core.FactsProducer
 
 /**
  * Scheduler configuration.

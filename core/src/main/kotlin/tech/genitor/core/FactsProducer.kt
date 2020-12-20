@@ -1,6 +1,4 @@
-package tech.genitor.agent.facts
-
-import tech.genitor.core.Facts
+package tech.genitor.core
 
 /**
  * Facts producer.

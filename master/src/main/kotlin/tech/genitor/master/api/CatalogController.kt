@@ -3,7 +3,7 @@ package tech.genitor.master.api
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import tech.genitor.master.catalog.CatalogService
+import tech.genitor.core.CatalogService
 
 /**
  * Catalog API.

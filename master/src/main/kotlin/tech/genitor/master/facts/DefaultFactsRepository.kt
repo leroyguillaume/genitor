@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
+import tech.genitor.core.FactsRepository
 import tech.genitor.master.FactsColumnName
 import tech.genitor.master.FactsTableName
 import tech.genitor.master.HostnameColumnName

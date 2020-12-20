@@ -6,6 +6,7 @@ import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
 import tech.genitor.agent.AgentProperties
 import tech.genitor.core.Facts
+import tech.genitor.core.FactsProducer
 
 /**
  * Kafka implementation of facts producer.

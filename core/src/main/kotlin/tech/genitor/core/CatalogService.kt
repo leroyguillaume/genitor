@@ -1,4 +1,4 @@
-package tech.genitor.master.catalog
+package tech.genitor.core
 
 /**
  * Catalog service.
