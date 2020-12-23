@@ -27,7 +27,7 @@ You can configure master by:
 
 |                Property               |          Environment variable         |                   Description                   |  Default value |
 |:-------------------------------------:|:-------------------------------------:|:-----------------------------------------------:|:--------------:|
-|           genitor.deploy-dir          |           GENITOR_DEPLOY_DIR          |             Path to deploy directory            |     deploy     |
+|           genitor.deploy-dir          |           GENITOR_DEPLOY_DIR          |             Path to deploy directory            |    examples    |
 |      genitor.server.bind-address      |      GENITOR_SERVER_BIND_ADDRESS      |               Server bind address               |    127.0.0.1   |
 |        genitor.server.bind-port       |        GENITOR_SERVER_BIND_PORT       |                 Server bind port                |      2001      |
 |            genitor.db.host            |            GENITOR_DB_HOST            |           Host of PostgreSQL database           |    127.0.0.1   |
@@ -35,6 +35,7 @@ You can configure master by:
 |            genitor.db.name            |            GENITOR_DB_NAME            |           Name of PostgreSQL database           | genitor_master |
 |          genitor.db.username          |          GENITOR_DB_USERNAME          | Username used to connect to PostgreSQL database | genitor_master |
 |          genitor.db.password          |          GENITOR_DB_PASSWORD          | Password used to connect to PostgreSQL database | genitor_master |
+|    genitor.kafka.bootstrap-servers    |    GENITOR_KAFKA_BOOTSTRAP_SERVERS    |        Kafka servers comma-separated list       | localhost:9093 |
 |     genitor.kafka.facts-topic.name    |     GENITOR_KAFKA_FACTS_TOPIC_NAME    |               Name of facts topic               |      facts     |
 |  genitor.kafka.facts-topic.partitions |  GENITOR_KAFKA_FACTS_TOPIC_PARTITIONS |       Number of partitions of facts topic       |        1       |
 |   genitor.kafka.facts-topic.replicas  |   GENITOR_KAFKA_FACTS_TOPIC_REPLICAS  |        Number of replicas of facts topic        |        1       |
