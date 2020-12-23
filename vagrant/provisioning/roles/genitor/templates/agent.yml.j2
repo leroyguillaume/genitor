@@ -1,0 +1,15 @@
+genitor:
+  server:
+    bind-address: 0.0.0.0
+  kafka:
+    bootstrap-servers: {{ kafka_host }}
+    ssl:
+      keystore: ssl/{{ keystore_filename }}
+      keystore-password: changeit
+      truststore: ssl/{{ truststore_filename }}
+      truststore-password: changeit
+
+logging:
+  file:
+    path: logs
+    name: logs/{{ project_name }}.log

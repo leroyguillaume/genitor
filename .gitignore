@@ -18,3 +18,6 @@ build
 *.csr
 *.key
 *.srl
+
+# Vagrant
+.vagrant

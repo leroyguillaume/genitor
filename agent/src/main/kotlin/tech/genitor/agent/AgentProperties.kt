@@ -23,10 +23,12 @@ data class AgentProperties(
     /**
      * Kafka properties.
      *
+     * @param bootstrapServers Kafka servers comma-separated list.
      * @param factsTopic Name of facts topic.
      * @param ssl SSL configuration.
      */
     data class Kafka(
+        override val bootstrapServers: String,
         val factsTopic: String,
         override val ssl: GenitorProperties.Kafka.Ssl
     ) : GenitorProperties.Kafka

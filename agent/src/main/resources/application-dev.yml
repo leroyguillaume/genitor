@@ -5,8 +5,3 @@ genitor:
       keystore-password: changeit
       truststore: docker/kafka/ssl/kafka.client.truststore.jks
       truststore-password: changeit
-
-logging:
-  level:
-    root: info
-    tech.genitor: debug

@@ -27,6 +27,11 @@ interface GenitorProperties {
         )
 
         /**
+         * Kafka servers comma-separated list.
+         */
+        val bootstrapServers: String
+
+        /**
          * SSL configuration.
          */
         val ssl: Ssl

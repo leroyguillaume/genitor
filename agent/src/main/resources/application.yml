@@ -9,6 +9,8 @@ genitor:
     # Server bind port
     bind-port: ${GENITOR_SERVER_BIND_PORT:2010}
   kafka:
+    # Kafka servers comma-separated list
+    bootstrap-servers: ${GENITOR_KAFKA_BOOTSTRAP_SERVERS:localhost:9093}
     # Name of facts topic
     facts-topic: ${GENITOR_KAFKA_FACTS_TOPIC_NAME:facts}
     ssl:
@@ -27,7 +29,7 @@ server:
 
 spring:
   kafka:
-    bootstrap-servers: ${GENITOR_KAFKA_BOOTSTRAP_SERVERS:localhost:9093}
+    bootstrap-servers: ${genitor.kafka.bootstrap-servers}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -41,8 +43,3 @@ spring:
       security.protocol: SSL
       ssl.protocol: SSL
       ssl.endpoint.identification.algorithm:
-
-logging:
-  level:
-    root: error
-    tech.genitor: info

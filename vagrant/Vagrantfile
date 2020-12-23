@@ -1,0 +1,26 @@
+GENITOR_PROJECT_NAME = "genitor"
+GENITOR_AGENT_PROJECT_NAME = "agent"
+
+Vagrant.configure("2") do |global_config|
+    global_config.vm.define "agent-01" do |config|
+        config.vm.box = "generic/debian9"
+
+        config.vm.hostname = "agent-01"
+        config.vm.network "public_network"
+    end
+
+    global_config.vm.provision "ansible" do |ansible|
+        ansible.playbook = "provisioning/playbook.yml"
+        ansible.become = true
+        ansible.groups = {
+            "agent" => ["agent-01"]
+        }
+        ansible.extra_vars = {
+            install_dir: "/opt/" + GENITOR_PROJECT_NAME,
+            root_project_name: GENITOR_PROJECT_NAME,
+            agent_project_name: GENITOR_AGENT_PROJECT_NAME,
+            version: "0.1.0",
+            kafka_host: ENV['KAFKA_HOST']
+        }
+    end
+end

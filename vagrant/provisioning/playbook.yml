@@ -1,0 +1,19 @@
+- hosts: all
+  tasks:
+    - include_role:
+        name: jvm
+
+    - name: ensure install directory is present
+      file:
+        state: directory
+        path: "{{ install_dir }}"
+        recurse: yes
+
+- hosts: agent
+  tasks:
+    - include_role:
+        name: genitor
+      vars:
+        module: agent
+        keystore_filename: kafka.client.keystore.jks
+        truststore_filename: kafka.client.truststore.jks

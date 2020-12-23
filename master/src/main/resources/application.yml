@@ -18,6 +18,8 @@ genitor:
     # Password used to connect to PostgreSQL database
     password: ${GENITOR_DB_PASSWORD:genitor_master}
   kafka:
+    # Kafka servers comma-separated list
+    bootstrap-servers: ${GENITOR_KAFKA_BOOTSTRAP_SERVERS:localhost:9093}
     facts-topic:
       # Name of facts topic
       name: ${GENITOR_KAFKA_FACTS_TOPIC_NAME:facts}
@@ -45,7 +47,7 @@ spring:
     username: ${genitor.db.username}
     password: ${genitor.db.password}
   kafka:
-    bootstrap-servers: ${GENITOR_KAFKA_BOOTSTRAP_SERVERS:localhost:9093}
+    bootstrap-servers: ${genitor.kafka.bootstrap-servers}
     consumer:
       group-id: master
     ssl:
@@ -60,8 +62,3 @@ spring:
       ssl.endpoint.identification.algorithm:
   liquibase:
     change-log: classpath:/db/changelog.yml
-
-logging:
-  level:
-    root: error
-    tech.genitor: info

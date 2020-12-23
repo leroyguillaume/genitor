@@ -1,0 +1,53 @@
+- set_fact:
+    project_name: "{{ root_project_name }}-{{ module }}"
+
+- set_fact:
+    project_name_with_version: "{{ project_name }}-{{ version }}"
+
+- set_fact:
+    working_dir: "{{ install_dir }}/{{ project_name_with_version }}"
+    symlink_file: "{{ install_dir }}/{{ project_name }}"
+
+- name: ensure tarball is unarchived
+  unarchive:
+    src: "../../{{ module }}/build/distributions/{{ project_name_with_version }}.tar.gz"
+    dest: "{{ install_dir }}"
+
+- name: ensure etc, ssl and logs directories are present
+  file:
+    state: directory
+    path: "{{ working_dir }}/{{ item }}"
+  with_items:
+    - etc
+    - ssl
+    - logs
+
+- name: ensure keystores are present
+  copy:
+    src: "../../docker/kafka/ssl/{{ item }}"
+    dest: "{{ working_dir }}/ssl/{{ item }}"
+  with_items:
+    - "{{ keystore_filename }}"
+    - "{{ truststore_filename }}"
+
+- name: ensure configuration is up-to-date
+  template:
+    src: "{{ module }}.yml.j2"
+    dest: "{{ working_dir }}/etc/genitor.yml"
+
+- name: ensure symlink is up-to-date
+  file:
+    state: link
+    path: "{{ symlink_file }}"
+    src: "{{ working_dir }}"
+
+- name: ensure systemd service is up-to-date
+  template:
+    src: service.j2
+    dest: "/etc/systemd/system/{{ project_name }}.service"
+
+- name: ensure service is restarted
+  systemd:
+    name: "{{ project_name }}"
+    state: restarted
+    daemon-reload: yes

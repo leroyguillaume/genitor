@@ -1,0 +1,10 @@
+[Unit]
+After=syslog.target network.target
+
+[Service]
+WorkingDirectory={{ symlink_file }}
+ExecStart={{ symlink_file }}/bin/{{ project_name }} --spring.config.additional-location=etc/genitor.yml
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

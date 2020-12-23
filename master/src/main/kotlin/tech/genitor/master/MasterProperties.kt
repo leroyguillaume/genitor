@@ -22,10 +22,12 @@ data class MasterProperties(
     /**
      * Kafka properties.
      *
+     * @param bootstrapServers Kafka servers comma-separated list.
      * @param factsTopic Facts topic configuration.
      * @param ssl SSL configuration.
      */
     data class Kafka(
+        override val bootstrapServers: String,
         val factsTopic: Topic,
         override val ssl: GenitorProperties.Kafka.Ssl
     ) : GenitorProperties.Kafka {

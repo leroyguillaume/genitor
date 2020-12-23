@@ -1,0 +1,9 @@
+- when: ansible_distribution == 'Debian' and ansible_distribution_major_version == '9'
+  include_tasks:
+    file: debian9.yml
+
+- when: ansible_distribution == 'Debian'
+  name: ensure jre 11 is installed
+  apt:
+    name: openjdk-11-jre
+    update_cache: yes
