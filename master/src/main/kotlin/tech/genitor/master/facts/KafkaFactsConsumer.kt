@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.stereotype.Component
+import tech.genitor.commons.config.NodeHeaderName
 import tech.genitor.core.FactsConsumer
 import tech.genitor.core.FactsRepository
 
@@ -24,7 +25,7 @@ class KafkaFactsConsumer(
     }
 
     @KafkaListener(topics = ["\${genitor.kafka.facts-topic.name}"])
-    override fun consume(factsJson: String, @Header("hostname") hostname: String) {
+    override fun consume(factsJson: String, @Header(NodeHeaderName) hostname: String) {
         Logger.debug("Facts of node '$hostname' received ('$factsJson')")
         factsRepository.save(hostname, factsJson)
     }

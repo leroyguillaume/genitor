@@ -15,6 +15,14 @@ class KafkaTopicsConfiguration(
     private val props: MasterProperties
 ) {
     /**
+     * Get information about catalog topic creation.
+     *
+     * @return Information about catalog topic creation.
+     */
+    @Bean
+    fun catalogTopic(): NewTopic = props.kafka.catalogTopic.toNewTopic()
+
+    /**
      * Get information about facts topic creation.
      *
      * @return Information about facts topic creation.

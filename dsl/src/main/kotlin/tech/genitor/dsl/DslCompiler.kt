@@ -1,6 +1,6 @@
 package tech.genitor.dsl
 
-import tech.genitor.core.ResourceGraphsBuilder
+import tech.genitor.core.CatalogBuilder
 import java.nio.file.Path
 
 /**
@@ -15,5 +15,5 @@ interface DslCompiler {
      * @throws DslException If DSL is invalid.
      */
     @Throws(DslException::class)
-    fun compile(scriptPath: Path): List<ResourceGraphsBuilder>
+    fun compile(scriptPath: Path): List<CatalogBuilder>
 }

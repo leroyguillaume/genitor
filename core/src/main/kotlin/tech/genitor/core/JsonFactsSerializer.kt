@@ -1,7 +1,7 @@
 package tech.genitor.core
 
 /**
- * JSON Facts serializer.
+ * JSON facts serializer.
  */
 interface JsonFactsSerializer {
     /**

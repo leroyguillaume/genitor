@@ -2,8 +2,8 @@ package tech.genitor.master.catalog
 
 import de.swirtz.ktsrunner.objectloader.KtsObjectLoader
 import org.springframework.stereotype.Component
+import tech.genitor.core.CatalogBuilder
 import tech.genitor.core.Node
-import tech.genitor.core.ResourceGraphsBuilder
 import tech.genitor.dsl.*
 import java.nio.file.Files
 import java.nio.file.Path
@@ -18,7 +18,7 @@ class DefaultDslCompiler : DslCompiler {
      */
     private val objectLoader = KtsObjectLoader()
 
-    override fun compile(scriptPath: Path): List<ResourceGraphsBuilder> {
+    override fun compile(scriptPath: Path): List<CatalogBuilder> {
         val catalogBlock = Files.newBufferedReader(scriptPath).use { objectLoader.load<CatalogBlock>(it) }
         val builderByHostname = builderByHostnameFromGroupBlock(
             groupBlock = catalogBlock.rootGroupBlock,
@@ -36,7 +36,7 @@ class DefaultDslCompiler : DslCompiler {
     private fun builderByHostnameFromNodeBlocks(nodeBlocks: List<NodeBlock>) = nodeBlocks
         .map { nodeBlock ->
             val ensureBlocks = nodeBlock.ensureBlock?.let { listOf(it) } ?: emptyList()
-            nodeBlock.hostname to DslResourceGraphsBuilder(nodeBlock.node, ensureBlocks)
+            nodeBlock.hostname to DslCatalogBuilder(nodeBlock.node, ensureBlocks)
         }
         .toMap()
 
@@ -51,8 +51,8 @@ class DefaultDslCompiler : DslCompiler {
     @Throws(UnknownNodeException::class)
     private fun builderByHostnameFromGroupBlock(
         groupBlock: GroupBlock,
-        builderByHostname: Map<String, DslResourceGraphsBuilder>
-    ): Map<String, DslResourceGraphsBuilder> {
+        builderByHostname: Map<String, DslCatalogBuilder>
+    ): Map<String, DslCatalogBuilder> {
         val ensureBlock = groupBlock.ensureBlock
         val groupBuilderByHostname = if (ensureBlock == null) { // If ensure block is not defined, no change
             builderByHostname

@@ -20,6 +20,13 @@ genitor:
   kafka:
     # Kafka servers comma-separated list
     bootstrap-servers: ${GENITOR_KAFKA_BOOTSTRAP_SERVERS:localhost:9093}
+    catalog-topic:
+      # Name of catalog topic
+      name: ${GENITOR_KAFKA_CATALOG_TOPIC_NAME:catalog}
+      # Number of partitions of catalog topic
+      partitions: ${GENITOR_KAFKA_CATALOG_TOPIC_PARTITIONS:1}
+      # Number of replicas of catalog topic
+      replicas: ${GENITOR_KAFKA_CATALOG_TOPIC_REPLICAS:1}
     facts-topic:
       # Name of facts topic
       name: ${GENITOR_KAFKA_FACTS_TOPIC_NAME:facts}
@@ -48,6 +55,9 @@ spring:
     password: ${genitor.db.password}
   kafka:
     bootstrap-servers: ${genitor.kafka.bootstrap-servers}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
     consumer:
       group-id: master
     ssl:

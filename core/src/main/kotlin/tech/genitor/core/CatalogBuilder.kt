@@ -1,9 +1,9 @@
 package tech.genitor.core
 
 /**
- * Resource graphs builder.
+ * Catalog builder.
  */
-interface ResourceGraphsBuilder {
+interface CatalogBuilder {
     /**
      * Node.
      */
@@ -15,5 +15,5 @@ interface ResourceGraphsBuilder {
      * @param facts Facts.
      * @return Resource graphs.
      */
-    fun build(facts: Facts): List<ResourceGraph>
+    fun build(facts: Facts): Catalog
 }
