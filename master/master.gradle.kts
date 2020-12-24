@@ -77,7 +77,6 @@ tasks {
             "build",
             "-t", tag,
             "-t", "$tag:$version",
-            "--target", target,
             "--build-arg", "version=$version",
             "docker/genitor"
         )
