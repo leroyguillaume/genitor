@@ -27,11 +27,12 @@ You can configure agent by:
 
 |                Property               |          Environment variable         |                   Description                   |  Default value |
 |:-------------------------------------:|:-------------------------------------:|:-----------------------------------------------:|:--------------:|
-|            genitor.hostname           |            GENITOR_HOSTNAME           |              Hostname of this node              |                |
+|            genitor.hostname           |            GENITOR_HOSTNAME           |              Hostname of this node              |        -       |
 |      genitor.collect-facts-every      |      GENITOR_COLLECT_FACTS_EVERY      | Number of minutes between two facts collection. |        5       |
 |      genitor.server.bind-address      |      GENITOR_SERVER_BIND_ADDRESS      |               Server bind address               |    127.0.0.1   |
 |        genitor.server.bind-port       |        GENITOR_SERVER_BIND_PORT       |                 Server bind port                |      2010      |
 |    genitor.kafka.bootstrap-servers    |    GENITOR_KAFKA_BOOTSTRAP_SERVERS    |        Kafka servers comma-separated list       | localhost:9093 |
+|      genitor.kafka.catalog-topic      |    GENITOR_KAFKA_CATALOG_TOPIC_NAME   |              Name of catalog topic              |     catalog    |
 |       genitor.kafka.facts-topic       |     GENITOR_KAFKA_FACTS_TOPIC_NAME    |               Name of facts topic               |      facts     |
 |       genitor.kafka.ssl.keystore      |       GENITOR_KAFKA_SSL_KEYSTORE      |              Path to Kafka keystore             |        -       |
 |  genitor.kafka.ssl.keystore-password  |  GENITOR_KAFKA_SSL_KEYSTORE_PASSWORD  |            Password of Kafka keystore           |        -       |

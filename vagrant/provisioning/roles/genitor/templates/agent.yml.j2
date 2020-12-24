@@ -1,6 +1,5 @@
 genitor:
-  server:
-    bind-address: 0.0.0.0
+  hostname: {{ inventory_hostname }}
   kafka:
     bootstrap-servers: {{ kafka_host }}
     ssl:
@@ -13,3 +12,5 @@ logging:
   file:
     path: logs
     name: logs/{{ project_name }}.log
+  level:
+    tech.genitor: debug

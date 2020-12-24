@@ -1,6 +1,6 @@
 genitor:
   # Hostname of this node
-  hostname: ${GENITOR_HOSTNAME:}
+  hostname: ${GENITOR_HOSTNAME}
   # Number of minutes between two facts collection.
   collect-facts-every: ${GENITOR_COLLECT_FACTS_EVERY:5}
   server:
@@ -11,6 +11,8 @@ genitor:
   kafka:
     # Kafka servers comma-separated list
     bootstrap-servers: ${GENITOR_KAFKA_BOOTSTRAP_SERVERS:localhost:9093}
+    # Name of catalog topic
+    catalog-topic: ${GENITOR_KAFKA_CATALOG_TOPIC_NAME:catalog}
     # Name of facts topic
     facts-topic: ${GENITOR_KAFKA_FACTS_TOPIC_NAME:facts}
     ssl:
@@ -33,6 +35,8 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: ${genitor.hostname}
     ssl:
       key-store-location: file:${genitor.kafka.ssl.keystore}
       key-store-password: ${genitor.kafka.ssl.keystore-password}
