@@ -35,7 +35,7 @@ class KafkaFactsProducer(
         val factsJson = factsSerializer.serialize(facts)
         Logger.debug("Facts serialized as JSON ('$factsJson')")
         val record = ProducerRecord<String, String>(props.kafka.factsTopic, factsJson).apply {
-            headers().add(NodeHeaderName, props.hostname.toByteArray())
+            headers().add(NodeHeaderName, props.hostname().toByteArray())
         }
         kafkaTemplate.send(record)
         Logger.info("Facts sent on topic '${props.kafka.factsTopic}'")

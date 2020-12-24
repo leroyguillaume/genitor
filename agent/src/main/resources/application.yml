@@ -1,6 +1,6 @@
 genitor:
   # Hostname of this node
-  hostname: ${GENITOR_HOSTNAME:${HOSTNAME}}
+  hostname: ${GENITOR_HOSTNAME:}
   # Number of minutes between two facts collection.
   collect-facts-every: ${GENITOR_COLLECT_FACTS_EVERY:5}
   server:

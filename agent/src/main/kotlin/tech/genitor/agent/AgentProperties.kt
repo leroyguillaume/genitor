@@ -3,6 +3,7 @@ package tech.genitor.agent
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
 import tech.genitor.commons.config.GenitorProperties
+import java.net.InetAddress
 
 /**
  * Agent properties.
@@ -32,4 +33,13 @@ data class AgentProperties(
         val factsTopic: String,
         override val ssl: GenitorProperties.Kafka.Ssl
     ) : GenitorProperties.Kafka
+
+    /**
+     * Get hostname.
+     *
+     * If hostname property is blank, machine hostname is returned.
+     *
+     * @return Hostname.
+     */
+    fun hostname(): String = if (hostname.isBlank()) InetAddress.getLocalHost().hostName else hostname
 }
