@@ -13,12 +13,8 @@ import java.nio.file.Path
  */
 @Component
 class DefaultDslCompiler : DslCompiler {
-    /**
-     * Object loader.
-     */
-    private val objectLoader = KtsObjectLoader()
-
     override fun compile(scriptPath: Path): List<CatalogBuilder> {
+        val objectLoader = KtsObjectLoader()
         val catalogBlock = Files.newBufferedReader(scriptPath).use { objectLoader.load<CatalogBlock>(it) }
         val builderByHostname = builderByHostnameFromGroupBlock(
             groupBlock = catalogBlock.rootGroupBlock,

@@ -19,14 +19,16 @@ class EnsureBlock internal constructor(
     /**
      * Resource holders.
      */
-    val resourceHolders = _resourceHolders.map { it.copy() }
+    val resourceHolders get() = _resourceHolders.map { it.copy() }
 
     /**
      * Copy constructor.
      *
      * @param ensureBlock Ensure block to copy.
      */
-    internal constructor(ensureBlock: EnsureBlock) : this(ensureBlock.fn)
+    internal constructor(ensureBlock: EnsureBlock) : this(ensureBlock.fn) {
+        _resourceHolders.addAll(ensureBlock.resourceHolders)
+    }
 
     /**
      * Create resource holder.
