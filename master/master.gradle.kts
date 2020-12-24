@@ -47,6 +47,9 @@ dependencies {
      * Runtime
      ***********************/
 
+    // Genitor
+    runtimeOnly(project(":$rootProjectName-core-resources"))
+
     // Kotlin
     runtimeOnly(kotlin("reflect"))
 

@@ -7,13 +7,6 @@ import tech.genitor.core.Resource
  *
  * @param resource Resource.
  */
-class ResourceHolder(
+data class ResourceHolder(
     val resource: Resource
-) {
-    /**
-     * Copy constructor.
-     *
-     * @param resourceHolder Resource holder.
-     */
-    constructor(resourceHolder: ResourceHolder) : this(resourceHolder.resource)
-}
+)

@@ -28,6 +28,9 @@ dependencies {
     implementation(project(":$rootProjectName-dto"))
     implementation(project(":$rootProjectName-commons-config"))
 
+    // Jackson
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
     // Kotlin
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
@@ -35,6 +38,13 @@ dependencies {
     // Spring
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.kafka:spring-kafka:2.6.3")
+
+    /***********************
+     * Runtime
+     ***********************/
+
+    // Genitor
+    runtimeOnly(project(":$rootProjectName-core-resources"))
 
     /***********************
      * Annotation processor

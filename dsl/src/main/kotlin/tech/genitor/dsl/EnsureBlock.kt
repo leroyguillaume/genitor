@@ -1,6 +1,7 @@
 package tech.genitor.dsl
 
 import tech.genitor.core.Facts
+import tech.genitor.core.Resource
 
 /**
  * Ensure block.
@@ -18,7 +19,7 @@ class EnsureBlock internal constructor(
     /**
      * Resource holders.
      */
-    val resourceHolders = _resourceHolders.map { ResourceHolder(it) }
+    val resourceHolders = _resourceHolders.map { it.copy() }
 
     /**
      * Copy constructor.
@@ -28,12 +29,12 @@ class EnsureBlock internal constructor(
     internal constructor(ensureBlock: EnsureBlock) : this(ensureBlock.fn)
 
     /**
-     * Add resource holder.
+     * Create resource holder.
      *
-     * @param resourceHolder Resource holder.
+     * @param resource Resource.
      */
-    fun add(resourceHolder: ResourceHolder) {
-        _resourceHolders.add(resourceHolder)
+    fun add(resource: Resource) = ResourceHolder(resource).apply {
+        _resourceHolders.add(this)
     }
 
     /**

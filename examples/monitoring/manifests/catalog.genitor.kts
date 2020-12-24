@@ -1,7 +1,14 @@
 package monitoring.manifests
 
 import tech.genitor.dsl.catalog
+import tech.genitor.resources.file.symlink
+import java.nio.file.Paths
 
 catalog {
-    val agent01 = node("agent-01")
+    node("agent-01") {
+        symlink(
+            path = Paths.get("/tmp/test"),
+            target = Paths.get("/etc/hosts")
+        )
+    }
 }

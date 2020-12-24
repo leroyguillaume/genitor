@@ -11,6 +11,8 @@ interface Resource {
 
     /**
      * Ensure resource.
+     *
+     * @return Report.
      */
-    fun ensure()
+    fun ensure(): ResourceReport<*>
 }

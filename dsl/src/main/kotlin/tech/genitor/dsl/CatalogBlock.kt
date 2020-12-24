@@ -69,3 +69,11 @@ class CatalogBlock internal constructor() : InsurableBlock() {
         return nodeBlock.node
     }
 }
+
+/**
+ * Create catalog block.
+ *
+ * @param block Function to build catalog.
+ * @return Catalog block.
+ */
+fun catalog(block: CatalogBlock.() -> Unit) = CatalogBlock().apply(block)
