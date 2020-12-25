@@ -1,8 +1,7 @@
-package tech.genitor.master.facts
+package tech.genitor.commons.beans
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import org.springframework.stereotype.Component
 import tech.genitor.core.Facts
 import tech.genitor.core.JsonFactsDeserializer
 import tech.genitor.dto.FactsDto
@@ -12,7 +11,6 @@ import tech.genitor.dto.FactsDto
  *
  * @param mapper Object mapper.
  */
-@Component
 class DefaultJsonFactsDeserializer(
     private val mapper: ObjectMapper
 ) : JsonFactsDeserializer {
@@ -24,7 +22,7 @@ class DefaultJsonFactsDeserializer(
     /**
      * Convert facts DTO to facts.
      */
-    private fun FactsDto.toFacts() = DefaultFact(
+    private fun FactsDto.toFacts() = Facts(
         agentVersion = agentVersion
     )
 }

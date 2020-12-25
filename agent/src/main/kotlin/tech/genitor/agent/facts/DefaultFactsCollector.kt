@@ -1,6 +1,7 @@
 package tech.genitor.agent.facts
 
 import org.springframework.stereotype.Component
+import tech.genitor.core.Facts
 import tech.genitor.core.FactsCollector
 
 /**
@@ -8,7 +9,7 @@ import tech.genitor.core.FactsCollector
  */
 @Component
 class DefaultFactsCollector : FactsCollector {
-    override fun collect() = DefaultFacts(
+    override fun collect() = Facts(
         agentVersion = javaClass.`package`.implementationVersion ?: "dev"
     )
 }

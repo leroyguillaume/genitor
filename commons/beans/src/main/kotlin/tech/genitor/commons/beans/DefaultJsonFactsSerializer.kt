@@ -1,7 +1,6 @@
-package tech.genitor.agent.facts
+package tech.genitor.commons.beans
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.springframework.stereotype.Component
 import tech.genitor.core.Facts
 import tech.genitor.core.JsonFactsSerializer
 
@@ -10,7 +9,6 @@ import tech.genitor.core.JsonFactsSerializer
  *
  * @param mapper Object mapper.
  */
-@Component
 class DefaultJsonFactsSerializer(
     private val mapper: ObjectMapper
 ) : JsonFactsSerializer {

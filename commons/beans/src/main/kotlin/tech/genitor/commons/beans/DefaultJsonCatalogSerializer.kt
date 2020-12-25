@@ -1,8 +1,7 @@
-package tech.genitor.master.catalog
+package tech.genitor.commons.beans
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
-import org.springframework.stereotype.Component
 import tech.genitor.core.*
 import tech.genitor.dto.*
 
@@ -11,7 +10,6 @@ import tech.genitor.dto.*
  *
  * @param mapper Object mapper.
  */
-@Component
 class DefaultJsonCatalogSerializer(
     private val mapper: ObjectMapper
 ) : JsonCatalogSerializer {
