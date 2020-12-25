@@ -5,6 +5,11 @@ package tech.genitor.core
  */
 interface Resource {
     /**
+     * Name.
+     */
+    val name: String
+
+    /**
      * Parameters.
      */
     val params: ResourceParams

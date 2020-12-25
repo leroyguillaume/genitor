@@ -1,7 +1,10 @@
 package tech.genitor.resources.file
 
 import org.slf4j.LoggerFactory
-import tech.genitor.core.*
+import tech.genitor.core.ResourceReport
+import tech.genitor.core.changed
+import tech.genitor.core.failure
+import tech.genitor.core.unchanged
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -10,7 +13,7 @@ import java.nio.file.Path
  */
 data class SymlinkResource(
     override val params: Params
-) : Resource {
+) : FileResource() {
     private companion object {
         /**
          * Logger.

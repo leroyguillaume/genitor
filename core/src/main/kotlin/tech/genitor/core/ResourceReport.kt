@@ -15,6 +15,7 @@ sealed class ResourceReport<D : ResourceReportData> {
      * @param cause Cause of failure.
      */
     data class Failure(
+        override val resource: Resource,
         val cause: Throwable
     ) : ResourceReport<Nothing>() {
         /**
@@ -37,6 +38,7 @@ sealed class ResourceReport<D : ResourceReportData> {
      * @param data Report data.
      */
     data class Success<D : ResourceReportData>(
+        override val resource: Resource,
         override val status: Status,
         val data: D
     ) : ResourceReport<D>() {
@@ -57,6 +59,11 @@ sealed class ResourceReport<D : ResourceReportData> {
     }
 
     /**
+     * Resource.
+     */
+    abstract val resource: Resource
+
+    /**
      * Status.
      */
     abstract val status: Status
@@ -68,8 +75,8 @@ sealed class ResourceReport<D : ResourceReportData> {
  * @param data Resource report data.
  * @return Report.
  */
-inline fun <reified D : ResourceReportData> changed(data: D) =
-    ResourceReport.Success(ResourceReport.Success.Status.Changed, data)
+inline fun <reified D : ResourceReportData> Resource.changed(data: D) =
+    ResourceReport.Success(this, ResourceReport.Success.Status.Changed, data)
 
 
 /**
@@ -78,7 +85,7 @@ inline fun <reified D : ResourceReportData> changed(data: D) =
  * @param throwable Cause of failure.
  * @return Report.
  */
-fun failure(throwable: Throwable) = ResourceReport.Failure(throwable)
+fun Resource.failure(throwable: Throwable) = ResourceReport.Failure(this, throwable)
 
 /**
  * Create unchanged resource report.
@@ -86,5 +93,5 @@ fun failure(throwable: Throwable) = ResourceReport.Failure(throwable)
  * @param data Resource report data.
  * @return Report.
  */
-inline fun <reified D : ResourceReportData> unchanged(data: D) =
-    ResourceReport.Success(ResourceReport.Success.Status.Unchanged, data)
+inline fun <reified D : ResourceReportData> Resource.unchanged(data: D) =
+    ResourceReport.Success(this, ResourceReport.Success.Status.Unchanged, data)
