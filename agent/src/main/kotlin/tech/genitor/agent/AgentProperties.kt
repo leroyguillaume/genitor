@@ -3,12 +3,14 @@ package tech.genitor.agent
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
 import tech.genitor.commons.config.GenitorProperties
+import java.nio.file.Path
 
 /**
  * Agent properties.
  *
  * @param hostname Hostname of machine.
  * @param collectFactsEvery Number of minutes between two facts collection.
+ * @param catalogCacheDir Path to directory to save catalogs.
  * @param server Server properties.
  * @param kafka Kafka properties.
  */
@@ -17,6 +19,7 @@ import tech.genitor.commons.config.GenitorProperties
 data class AgentProperties(
     val hostname: String,
     val collectFactsEvery: Int,
+    val catalogCacheDir: Path,
     override val server: GenitorProperties.Server,
     override val kafka: Kafka
 ) : GenitorProperties {

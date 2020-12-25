@@ -1,8 +1,10 @@
 genitor:
   # Hostname of this node
   hostname: ${GENITOR_HOSTNAME}
-  # Number of minutes between two facts collection.
+  # Number of minutes between two facts collection
   collect-facts-every: ${GENITOR_COLLECT_FACTS_EVERY:5}
+  # Path to directory to save catalogs
+  catalog-cache-dir: ${GENITOR_CATALOG_CACHE_DIR:~/.genitor/catalogs}
   server:
     # Server bind address
     bind-address: ${GENITOR_SERVER_BIND_ADDRESS:127.0.0.1}
