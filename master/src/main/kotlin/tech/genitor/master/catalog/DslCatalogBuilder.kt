@@ -6,10 +6,12 @@ import tech.genitor.dsl.EnsureBlock
 /**
  * Catalog builder from ensure blocks.
  *
+ * @param project Project.
  * @param node Node.
  * @param ensureBlocks Ensure blocks.
  */
 class DslCatalogBuilder internal constructor(
+    override val project: Project,
     override val node: Node,
     private val ensureBlocks: List<EnsureBlock>
 ) : CatalogBuilder {
@@ -17,6 +19,7 @@ class DslCatalogBuilder internal constructor(
         val resourceHolders = ensureBlocks.flatMap { it.build(facts).resourceHolders }
         val graphs = resourceHolders.map { ResourceGraph(it.resource) }
         return Catalog(
+            project = project,
             node = node,
             graphs = graphs
         )
@@ -28,5 +31,5 @@ class DslCatalogBuilder internal constructor(
      * @param ensureBlock Ensure block.
      * @return A copy of this builder with added ensure block.
      */
-    internal fun addEnsureBlock(ensureBlock: EnsureBlock) = DslCatalogBuilder(node, ensureBlocks + ensureBlock)
+    internal fun addEnsureBlock(ensureBlock: EnsureBlock) = DslCatalogBuilder(project, node, ensureBlocks + ensureBlock)
 }

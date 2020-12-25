@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import org.springframework.stereotype.Component
 import tech.genitor.core.*
-import tech.genitor.dto.CatalogDto
-import tech.genitor.dto.NodeDto
-import tech.genitor.dto.ResourceDto
-import tech.genitor.dto.ResourceGraphDto
+import tech.genitor.dto.*
 
 /**
  * Default implementation of JSON catalog serializer.
@@ -29,6 +26,7 @@ class DefaultJsonCatalogSerializer(
      * @return Catalog DTO.
      */
     private fun Catalog.toDto() = CatalogDto(
+        project = project.toDto(),
         node = node.toDto(),
         graphs = graphs.map { it.toDto() }
     )
@@ -40,6 +38,16 @@ class DefaultJsonCatalogSerializer(
      */
     private fun Node.toDto() = NodeDto(
         hostname = hostname
+    )
+
+    /**
+     * Convert project to DTO.
+     *
+     * @return Project DTO.
+     */
+    private fun Project.toDto() = ProjectDto(
+        name = name,
+        namespace = namespace
     )
 
     /**

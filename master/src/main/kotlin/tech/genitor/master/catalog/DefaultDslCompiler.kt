@@ -4,21 +4,24 @@ import de.swirtz.ktsrunner.objectloader.KtsObjectLoader
 import org.springframework.stereotype.Component
 import tech.genitor.core.CatalogBuilder
 import tech.genitor.core.Node
+import tech.genitor.core.Project
+import tech.genitor.core.ProjectDir
 import tech.genitor.dsl.*
 import java.nio.file.Files
-import java.nio.file.Path
 
 /**
  * Default implementation of DSL compiler.
  */
 @Component
 class DefaultDslCompiler : DslCompiler {
-    override fun compile(scriptPath: Path): List<CatalogBuilder> {
+    override fun compile(projectDir: ProjectDir): List<CatalogBuilder> {
         val objectLoader = KtsObjectLoader()
-        val catalogBlock = Files.newBufferedReader(scriptPath).use { objectLoader.load<CatalogBlock>(it) }
+        val catalogBlock = Files.newBufferedReader(projectDir.entrypointScriptPath).use {
+            objectLoader.load<CatalogBlock>(it)
+        }
         val builderByHostname = builderByHostnameFromGroupBlock(
             groupBlock = catalogBlock.rootGroupBlock,
-            builderByHostname = builderByHostnameFromNodeBlocks(catalogBlock.nodeBlocks)
+            builderByHostname = builderByHostnameFromNodeBlocks(projectDir.project, catalogBlock.nodeBlocks)
         )
         return builderByHostname.values.toList()
     }
@@ -26,13 +29,14 @@ class DefaultDslCompiler : DslCompiler {
     /**
      * Get builder by node hostname from node blocks.
      *
+     * @param project Project.
      * @param nodeBlocks Node blocks.
      * @return Builder by node hostname.
      */
-    private fun builderByHostnameFromNodeBlocks(nodeBlocks: List<NodeBlock>) = nodeBlocks
+    private fun builderByHostnameFromNodeBlocks(project: Project, nodeBlocks: List<NodeBlock>) = nodeBlocks
         .map { nodeBlock ->
             val ensureBlocks = nodeBlock.ensureBlock?.let { listOf(it) } ?: emptyList()
-            nodeBlock.hostname to DslCatalogBuilder(nodeBlock.node, ensureBlocks)
+            nodeBlock.hostname to DslCatalogBuilder(project, nodeBlock.node, ensureBlocks)
         }
         .toMap()
 

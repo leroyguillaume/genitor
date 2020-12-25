@@ -3,8 +3,8 @@ package tech.genitor.master.catalog
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import tech.genitor.core.Project
-import tech.genitor.core.ProjectNamespace
-import tech.genitor.core.ProjectScanner
+import tech.genitor.core.ProjectDir
+import tech.genitor.core.ProjectDirScanner
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.streams.toList
@@ -13,7 +13,7 @@ import kotlin.streams.toList
  * Default implementation of Genitor project scanner.
  */
 @Component
-class DefaultProjectScanner : ProjectScanner {
+class DefaultProjectDirScanner : ProjectDirScanner {
     private companion object {
         /**
          * Name of DSL entrypoint script file.
@@ -28,13 +28,13 @@ class DefaultProjectScanner : ProjectScanner {
         /**
          * Logger.
          */
-        private val Logger = LoggerFactory.getLogger(DefaultProjectScanner::class.java)
+        private val Logger = LoggerFactory.getLogger(DefaultProjectDirScanner::class.java)
     }
 
     override fun scan(dir: Path) = Files.list(dir)
         .filter { Files.isDirectory(it) }
         .toList()
-        .flatMap { scan(it, ProjectNamespace()) }
+        .flatMap { scan(it, Project.RootNamespace) }
 
     /**
      * Scan recursively directory and list projects.
@@ -43,7 +43,7 @@ class DefaultProjectScanner : ProjectScanner {
      * @param namespace Namespace.
      * @return Projects.
      */
-    private fun scan(path: Path, namespace: ProjectNamespace): List<Project> {
+    private fun scan(path: Path, namespace: String): List<ProjectDir> {
         val absolutePath = path.toAbsolutePath()
         Logger.debug("Scanning $absolutePath")
         val manifestsDir = path.resolve(ManifestsDirName)
@@ -51,9 +51,11 @@ class DefaultProjectScanner : ProjectScanner {
         return if (Files.isDirectory(manifestsDir) && Files.isRegularFile(entrypointScriptPath)) {
             Logger.debug("$absolutePath scanned as project directory")
             listOf(
-                Project(
-                    name = path.fileName.toString(),
-                    namespace = namespace,
+                ProjectDir(
+                    project = Project(
+                        name = path.fileName.toString(),
+                        namespace = namespace,
+                    ),
                     path = path,
                     entrypointScriptPath = entrypointScriptPath
                 )
@@ -62,7 +64,7 @@ class DefaultProjectScanner : ProjectScanner {
             Files.list(path)
                 .filter { Files.isDirectory(it) }
                 .toList()
-                .flatMap { scan(it, namespace.addName(path.fileName.toString())) }
+                .flatMap { scan(it, "$namespace${Project.NamespaceSeparator}${path.fileName}") }
         }
     }
 }

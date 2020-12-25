@@ -5,6 +5,11 @@ package tech.genitor.core
  */
 interface CatalogBuilder {
     /**
+     * Project.
+     */
+    val project: Project
+
+    /**
      * Node.
      */
     val node: Node
