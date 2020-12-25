@@ -68,6 +68,6 @@ class DefaultCatalogExecutor : CatalogExecutor {
      * @param report Resource report.
      */
     private fun handleUnchanged(report: ResourceReport.Success<*>) {
-        Logger.info("Resource '${report.resource.name}' changed")
+        Logger.info("Resource '${report.resource.name}' unchanged")
     }
 }

@@ -44,9 +44,9 @@ enum class FileState(
  * @return File state.
  */
 fun fileState(path: Path) = when {
+    Files.isSymbolicLink(path) -> FileState.Symlink
     Files.isDirectory(path) -> FileState.Directory
     Files.isRegularFile(path) -> FileState.Regular
-    Files.isSymbolicLink(path) -> FileState.Symlink
     !Files.exists(path) -> FileState.Absent
     else -> FileState.Unknown
 }
