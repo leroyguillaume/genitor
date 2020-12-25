@@ -30,6 +30,8 @@ server:
   port: ${genitor.server.bind-port}
 
 spring:
+  jackson:
+    default-property-inclusion: non_null
   kafka:
     bootstrap-servers: ${genitor.kafka.bootstrap-servers}
     producer:

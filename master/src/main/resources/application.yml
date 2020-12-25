@@ -53,6 +53,8 @@ spring:
     url: jdbc:postgresql://${genitor.db.host}:${genitor.db.port}/${genitor.db.name}
     username: ${genitor.db.username}
     password: ${genitor.db.password}
+  jackson:
+    default-property-inclusion: non_null
   kafka:
     bootstrap-servers: ${genitor.kafka.bootstrap-servers}
     producer:
