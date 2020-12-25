@@ -2,7 +2,7 @@ package tech.genitor.agent
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
-import tech.genitor.commons.config.GenitorProperties
+import tech.genitor.commons.beans.GenitorProperties
 import java.nio.file.Path
 
 /**

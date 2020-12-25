@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
 import tech.genitor.agent.AgentProperties
-import tech.genitor.commons.config.NodeHeaderName
+import tech.genitor.commons.beans.NodeHeaderName
 import tech.genitor.core.Facts
 import tech.genitor.core.FactsProducer
 import tech.genitor.core.JsonFactsSerializer

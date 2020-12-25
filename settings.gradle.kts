@@ -16,6 +16,6 @@ fun includeModule(name: String, subGroup: String? = null) {
 
 rootProject.name = "genitor"
 
-arrayOf("core", "dto", "dsl", "master", "agent", "core-resources").forEach { includeModule(it) }
-arrayOf("config").forEach { includeModule(it, "commons") }
+arrayOf("bom", "core", "dto", "dsl", "master", "agent", "core-resources").forEach { includeModule(it) }
+arrayOf("beans").forEach { includeModule(it, "commons") }
 arrayOf("file").forEach { includeModule(it, "resources") }

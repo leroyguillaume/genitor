@@ -11,7 +11,6 @@ plugins {
 
     // Spring
     id("org.springframework.boot") version "2.3.5.RELEASE" apply false
-    id("io.spring.dependency-management") version "1.0.10.RELEASE" apply false
 }
 
 allprojects {

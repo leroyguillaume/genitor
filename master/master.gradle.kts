@@ -27,7 +27,7 @@ dependencies {
     implementation(project(":$rootProjectName-core"))
     implementation(project(":$rootProjectName-dto"))
     implementation(project(":$rootProjectName-dsl"))
-    implementation(project(":$rootProjectName-commons-config"))
+    implementation(project(":$rootProjectName-commons-beans"))
 
     // Jackson
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -41,7 +41,7 @@ dependencies {
     // Spring
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
-    implementation("org.springframework.kafka:spring-kafka:2.6.3")
+    implementation("org.springframework.kafka:spring-kafka")
 
     /***********************
      * Runtime

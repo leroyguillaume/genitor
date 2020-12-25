@@ -1,4 +1,4 @@
-package tech.genitor.commons.config
+package tech.genitor.commons.beans
 
 /**
  * Name of header used to reference node.

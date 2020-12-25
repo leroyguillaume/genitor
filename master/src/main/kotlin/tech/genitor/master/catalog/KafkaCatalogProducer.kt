@@ -4,7 +4,7 @@ import org.apache.kafka.clients.producer.ProducerRecord
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
-import tech.genitor.commons.config.NodeHeaderName
+import tech.genitor.commons.beans.NodeHeaderName
 import tech.genitor.core.Catalog
 import tech.genitor.core.CatalogProducer
 import tech.genitor.core.JsonCatalogSerializer

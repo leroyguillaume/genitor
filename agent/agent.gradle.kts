@@ -9,7 +9,6 @@ plugins {
 
     // Spring
     id("org.springframework.boot")
-    id("io.spring.dependency-management")
 }
 
 application {
@@ -24,9 +23,10 @@ dependencies {
      ***********************/
 
     // Genitor
+    implementation(platform(project(":$rootProjectName-bom")))
     implementation(project(":$rootProjectName-core"))
     implementation(project(":$rootProjectName-dto"))
-    implementation(project(":$rootProjectName-commons-config"))
+    implementation(project(":$rootProjectName-commons-beans"))
 
     // Jackson
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -37,7 +37,7 @@ dependencies {
 
     // Spring
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.kafka:spring-kafka:2.6.3")
+    implementation("org.springframework.kafka:spring-kafka")
 
     /***********************
      * Runtime

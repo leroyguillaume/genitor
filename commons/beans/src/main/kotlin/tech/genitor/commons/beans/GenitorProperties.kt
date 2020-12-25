@@ -1,4 +1,4 @@
-package tech.genitor.commons.config
+package tech.genitor.commons.beans
 
 import java.net.InetAddress
 import java.nio.file.Path
