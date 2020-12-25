@@ -6,10 +6,7 @@ import org.springframework.messaging.handler.annotation.Header
 import org.springframework.stereotype.Component
 import tech.genitor.agent.AgentProperties
 import tech.genitor.commons.beans.NodeHeaderName
-import tech.genitor.core.CatalogConsumer
-import tech.genitor.core.CatalogExecutor
-import tech.genitor.core.JsonCatalogDeserializer
-import tech.genitor.core.ResourceInstantiationException
+import tech.genitor.core.*
 
 /**
  * Kafka implementation of catalog consumer.
@@ -21,6 +18,7 @@ import tech.genitor.core.ResourceInstantiationException
 @Component
 class KafkaCatalogConsumer(
     private val catalogDeserializer: JsonCatalogDeserializer,
+    private val catalogCache: CatalogCache,
     private val catalogExecutor: CatalogExecutor,
     private val props: AgentProperties
 ) : CatalogConsumer {
@@ -37,6 +35,7 @@ class KafkaCatalogConsumer(
         if (hostname == props.hostname) {
             try {
                 val catalog = catalogDeserializer.deserialize(catalogJson)
+                catalogCache.save(catalog)
                 val report = catalogExecutor.execute(catalog)
             } catch (exception: ResourceInstantiationException) {
                 Logger.error(exception.message, exception)

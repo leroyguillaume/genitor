@@ -10,6 +10,9 @@ dependencies {
      * Implementation
      ***********************/
 
+    // Commons
+    implementation("commons-codec:commons-codec:1.15")
+
     // Genitor
     implementation(platform(project(":$rootProjectName-bom")))
     implementation(project(":$rootProjectName-core"))

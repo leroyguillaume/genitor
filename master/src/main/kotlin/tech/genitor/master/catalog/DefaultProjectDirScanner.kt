@@ -49,7 +49,7 @@ class DefaultProjectDirScanner : ProjectDirScanner {
         val manifestsDir = path.resolve(ManifestsDirName)
         val entrypointScriptPath = manifestsDir.resolve(EntrypointScriptFilename)
         return if (Files.isDirectory(manifestsDir) && Files.isRegularFile(entrypointScriptPath)) {
-            Logger.debug("$absolutePath scanned as project directory")
+            Logger.debug("Directory $absolutePath scanned as project directory")
             listOf(
                 ProjectDir(
                     project = Project(

@@ -38,7 +38,7 @@ class DefaultCatalogService(
         val projectDirs = projectDirScanner.scan(props.deployDir)
         projectDirs.forEach { projectDir ->
             val projectName = projectDir.project.completeName
-            Logger.debug("Compiling '$projectName'")
+            Logger.debug("Compiling project '$projectName'")
             val catalogBuilders = dslCompiler.compile(projectDir)
             if (catalogBuilders.isEmpty()) {
                 Logger.warn("Project '$projectName' is empty")
@@ -49,7 +49,7 @@ class DefaultCatalogService(
                 if (facts == null) {
                     Logger.warn("No facts found for node '${builder.node.hostname}'")
                 } else {
-                    Logger.debug("Building catalog of node '${builder.node.hostname}'")
+                    Logger.debug("Building catalog '$projectName' of node '${builder.node.hostname}'")
                     val catalog = builder.build(facts)
                     catalogProducer.send(catalog)
                 }
