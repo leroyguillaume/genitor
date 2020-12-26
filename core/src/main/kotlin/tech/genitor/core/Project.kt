@@ -8,26 +8,26 @@ package tech.genitor.core
  */
 data class Project(
     val name: String,
-    val namespace: String,
+    val namespace: String?,
 ) {
     companion object {
         /**
-         * Root namespace.
-         */
-        const val RootNamespace = "/"
-
-        /**
          * Namespace separator.
          */
-        const val NamespaceSeparator = "/"
+        const val NamespaceSeparator = "."
+
+        /**
+         * Namespace regex.
+         */
+        val NamespaceRegex = Regex("^([A-Za-z0-9]+\\$NamespaceSeparator)*([A-Za-z0-9]+)$")
     }
 
     /**
      * Name with namespace.
      */
-    val completeName = if (namespace == RootNamespace) {
+    val completeName = if (namespace == null) {
         name
     } else {
-        "$namespace/$name"
+        "$namespace$NamespaceSeparator$name"
     }
 }

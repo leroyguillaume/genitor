@@ -8,5 +8,5 @@ package tech.genitor.dto
  */
 data class ProjectDto(
     val name: String,
-    val namespace: String
+    val namespace: String? = null
 )

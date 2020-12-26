@@ -3,9 +3,9 @@ package tech.genitor.master.catalog
 import de.swirtz.ktsrunner.objectloader.KtsObjectLoader
 import org.springframework.stereotype.Component
 import tech.genitor.core.CatalogBuilder
+import tech.genitor.core.GenitorFile
 import tech.genitor.core.Node
 import tech.genitor.core.Project
-import tech.genitor.core.ProjectDir
 import tech.genitor.dsl.*
 import java.nio.file.Files
 
@@ -14,14 +14,14 @@ import java.nio.file.Files
  */
 @Component
 class DefaultDslCompiler : DslCompiler {
-    override fun compile(projectDir: ProjectDir): List<CatalogBuilder> {
+    override fun compile(genitorFile: GenitorFile): List<CatalogBuilder> {
         val objectLoader = KtsObjectLoader()
-        val catalogBlock = Files.newBufferedReader(projectDir.entrypointScriptPath).use {
+        val catalogBlock = Files.newBufferedReader(genitorFile.catalogPath).use {
             objectLoader.load<CatalogBlock>(it)
         }
         val builderByHostname = builderByHostnameFromGroupBlock(
             groupBlock = catalogBlock.rootGroupBlock,
-            builderByHostname = builderByHostnameFromNodeBlocks(projectDir.project, catalogBlock.nodeBlocks)
+            builderByHostname = builderByHostnameFromNodeBlocks(genitorFile.project, catalogBlock.nodeBlocks)
         )
         return builderByHostname.values.toList()
     }

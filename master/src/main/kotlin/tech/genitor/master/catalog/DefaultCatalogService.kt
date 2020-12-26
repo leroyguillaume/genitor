@@ -5,14 +5,14 @@ import org.springframework.stereotype.Service
 import tech.genitor.core.CatalogProducer
 import tech.genitor.core.CatalogService
 import tech.genitor.core.FactsRepository
-import tech.genitor.core.ProjectDirScanner
+import tech.genitor.core.GenitorFileScanner
 import tech.genitor.dsl.DslCompiler
 import tech.genitor.master.MasterProperties
 
 /**
  * Default implementation of catalog service.
  *
- * @param projectDirScanner Project directory scanner.
+ * @param genitorFileScanner Project file scanner.
  * @param dslCompiler DSL compiler.
  * @param factsRepository Facts repository.
  * @param catalogProducer Catalog producer.
@@ -20,7 +20,7 @@ import tech.genitor.master.MasterProperties
  */
 @Service
 class DefaultCatalogService(
-    private val projectDirScanner: ProjectDirScanner,
+    private val genitorFileScanner: GenitorFileScanner,
     private val dslCompiler: DslCompiler,
     private val factsRepository: FactsRepository,
     private val catalogProducer: CatalogProducer,
@@ -35,7 +35,7 @@ class DefaultCatalogService(
 
     override fun deploy() {
         Logger.debug("Starting deployment")
-        val projectDirs = projectDirScanner.scan(props.deployDir)
+        val projectDirs = genitorFileScanner.scan(props.deployDir)
         projectDirs.forEach { projectDir ->
             val projectName = projectDir.project.completeName
             Logger.debug("Compiling project '$projectName'")

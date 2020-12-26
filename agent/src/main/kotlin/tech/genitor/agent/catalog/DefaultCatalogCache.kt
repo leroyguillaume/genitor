@@ -35,7 +35,8 @@ class DefaultCatalogCache(
 
     override fun get(project: Project): Catalog? {
         val projectName = project.completeName
-        val dir = props.catalogsCacheDir.resolve(projectName).toAbsolutePath()
+        val subPath = projectName.replace(Project.NamespaceSeparator, "/")
+        val dir = props.catalogsCacheDir.resolve(subPath).toAbsolutePath()
         Logger.debug("Finding catalog '$projectName' from $dir directory")
         return if (!Files.isDirectory(dir)) {
             Logger.debug("$dir is not a directory, no catalog '$projectName' in cache")
@@ -61,9 +62,12 @@ class DefaultCatalogCache(
 
     override fun save(catalog: Catalog) {
         val projectName = catalog.project.completeName
-        val dir = props.catalogsCacheDir.resolve(projectName).toAbsolutePath()
+        val subPath = projectName.replace(Project.NamespaceSeparator, "/")
+        val dir = props.catalogsCacheDir.resolve(subPath).toAbsolutePath()
         if (!Files.isDirectory(dir)) {
+            Logger.debug("Creating $dir directories")
             Files.createDirectories(dir)
+            Logger.debug("Directories $dir created")
         }
         val catalogJson = catalogSerializer.serialize(catalog)
         Logger.debug("Catalog '$projectName' serialized as JSON ('$catalogJson')")
