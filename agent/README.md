@@ -29,7 +29,7 @@ You can configure agent by:
 |:-------------------------------------:|:-------------------------------------:|:----------------------------------------------:|:--------------:|
 |            genitor.hostname           |            GENITOR_HOSTNAME           |              Hostname of this node             |        -       |
 |      genitor.collect-facts-every      |      GENITOR_COLLECT_FACTS_EVERY      | Number of minutes between two facts collection |        5       |
-|       genitor.catalogs-cache-dir      |       GENITOR_CATALOGS_CACHE_DIR      |       Path to directory to save catalogs       | cache/catalogs |
+|           genitor.cache-dir           |           GENITOR_CACHE_DIR           |     Path to directory in which save catalog    |      cache     |
 |      genitor.server.bind-address      |      GENITOR_SERVER_BIND_ADDRESS      |               Server bind address              |    127.0.0.1   |
 |        genitor.server.bind-port       |        GENITOR_SERVER_BIND_PORT       |                Server bind port                |      2010      |
 |    genitor.kafka.bootstrap-servers    |    GENITOR_KAFKA_BOOTSTRAP_SERVERS    |       Kafka servers comma-separated list       | localhost:9093 |

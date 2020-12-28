@@ -7,10 +7,12 @@ import java.nio.file.Path
  */
 interface GenitorFileScanner {
     /**
-     * Scan directory and list project files.
+     * Scan directory and return project file.
+     *
+     * If no project file is found, default one is returned.
      *
      * @param dir Path to directory.
-     * @return Project files.
+     * @return Project file.
      */
-    fun scan(dir: Path): List<GenitorFile>
+    fun scan(dir: Path): GenitorFile
 }

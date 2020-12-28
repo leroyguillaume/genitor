@@ -3,7 +3,10 @@ package tech.genitor.commons.beans
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import tech.genitor.core.*
-import tech.genitor.dto.*
+import tech.genitor.dto.CatalogDto
+import tech.genitor.dto.NodeDto
+import tech.genitor.dto.ResourceDto
+import tech.genitor.dto.ResourceGraphDto
 
 /**
  * Default implementation of JSON catalog serializer.
@@ -24,8 +27,6 @@ class DefaultJsonCatalogSerializer(
      * @return Catalog DTO.
      */
     private fun Catalog.toDto() = CatalogDto(
-        project = project.toDto(),
-        node = node.toDto(),
         graphs = graphs.map { it.toDto() }
     )
 
@@ -36,16 +37,6 @@ class DefaultJsonCatalogSerializer(
      */
     private fun Node.toDto() = NodeDto(
         hostname = hostname
-    )
-
-    /**
-     * Convert project to DTO.
-     *
-     * @return Project DTO.
-     */
-    private fun Project.toDto() = ProjectDto(
-        name = metadata.name,
-        namespace = metadata.namespace
     )
 
     /**

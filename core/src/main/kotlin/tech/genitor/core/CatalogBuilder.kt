@@ -5,11 +5,6 @@ package tech.genitor.core
  */
 interface CatalogBuilder {
     /**
-     * Project metadata.
-     */
-    val projectMetadata: ProjectMetadata
-
-    /**
      * Node.
      */
     val node: Node

@@ -35,24 +35,20 @@ class DefaultCatalogService(
 
     override fun deploy() {
         Logger.debug("Starting deployment")
-        val projectDirs = genitorFileScanner.scan(props.deployDir)
-        projectDirs.forEach { projectDir ->
-            val projectName = projectDir.projectMetadata.completeName
-            Logger.debug("Compiling project '$projectName'")
-            val catalogBuilders = dslCompiler.compile(projectDir)
-            if (catalogBuilders.isEmpty()) {
-                Logger.warn("Project '$projectName' is empty")
-            }
-            catalogBuilders.forEach { builder ->
-                Logger.debug("Fetching facts of node '${builder.node.hostname}'")
-                val facts = factsRepository.get(builder.node.hostname)
-                if (facts == null) {
-                    Logger.warn("No facts found for node '${builder.node.hostname}'")
-                } else {
-                    Logger.debug("Building catalog '$projectName' of node '${builder.node.hostname}'")
-                    val catalog = builder.build(facts)
-                    catalogProducer.send(catalog)
-                }
+        val genitorFile = genitorFileScanner.scan(props.deployDir)
+        val catalogBuilders = dslCompiler.compile(genitorFile)
+        if (catalogBuilders.isEmpty()) {
+            Logger.warn("Catalog is empty")
+        }
+        catalogBuilders.forEach { builder ->
+            Logger.debug("Fetching facts of node '${builder.node.hostname}'")
+            val facts = factsRepository.get(builder.node.hostname)
+            if (facts == null) {
+                Logger.warn("No facts found for node '${builder.node.hostname}'")
+            } else {
+                Logger.debug("Building catalog for node '${builder.node.hostname}'")
+                val catalog = builder.build(facts)
+                catalogProducer.send(builder.node, catalog)
             }
         }
     }

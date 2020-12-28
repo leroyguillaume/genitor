@@ -3,12 +3,10 @@ package tech.genitor.master.catalog
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import tech.genitor.core.GenitorFile
-import tech.genitor.core.GenitorFileException
 import tech.genitor.core.GenitorFileLoader
 import tech.genitor.core.GenitorFileScanner
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.streams.toList
 
 /**
  * Default implementation of Genitor project scanner.
@@ -31,36 +29,23 @@ class DefaultGenitorFileScanner(
         private val Logger = LoggerFactory.getLogger(DefaultGenitorFileScanner::class.java)
     }
 
-    override fun scan(dir: Path) = doScan(dir)
-
-    /**
-     * Scan recursively directory and list Genitor project files.
-     *
-     * @param path Path.
-     * @return Genitor project files.
-     */
-    private fun doScan(path: Path): List<GenitorFile> {
-        val absolutePath = path.toAbsolutePath()
-        Logger.debug("Scanning $absolutePath")
-        val genitorFilePath = absolutePath.resolve(GenitorFilename)
+    override fun scan(dir: Path): GenitorFile {
+        val dirAbsolutePath = dir.toAbsolutePath()
+        val genitorFilePath = dirAbsolutePath.resolve(GenitorFilename)
+        val defaultGenitorFile = GenitorFile(
+            manifestsDir = dir.resolve(GenitorFile.DefaultManifestsDir),
+            catalogScriptFilename = GenitorFile.DefaultCatalogScriptFilename
+        )
         return if (!Files.exists(genitorFilePath)) {
-            Files.list(path)
-                .filter { Files.isDirectory(it) }
-                .toList()
-                .flatMap { doScan(it) }
+            Logger.debug("No Genitor project file found, default one will be used ($genitorFilePath)")
+            defaultGenitorFile
+        } else if (!Files.isRegularFile(genitorFilePath)) {
+            Logger.debug("Genitor project file is not a regular file, default one will be used ($genitorFilePath)")
+            defaultGenitorFile
         } else {
-            if (!Files.isRegularFile(genitorFilePath)) {
-                Logger.warn("File $genitorFilePath ignored because it is not regular file")
-                emptyList()
-            } else {
-                try {
-                    val genitorFile = genitorFileLoader.load(genitorFilePath)
-                    Logger.debug("File $genitorFilePath loaded as Genitor project file")
-                    listOf(genitorFile)
-                } catch (exception: GenitorFileException) {
-                    Logger.error(exception.message, exception)
-                    emptyList()
-                }
+            Logger.debug("Loading Genitor project file ($genitorFilePath)")
+            genitorFileLoader.load(genitorFilePath).apply {
+                Logger.debug("Genitor project file loaded ($genitorFilePath)")
             }
         }
     }

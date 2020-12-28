@@ -1,18 +1,15 @@
 package tech.genitor.dto
 
+import tech.genitor.core.GenitorFile
 import java.nio.file.Path
 
 /**
  * Genitor project file DTO.
  *
- * @param name Project name.
- * @param namespace Project namespace.
- * @param manifestsDir Path to manifests directory relative to this file.
- * @param catalogFilename Name of catalog DSL script file.
+ * @param manifestsDir Relative path to manifests directory.
+ * @param catalogScriptFilename Catalog script filename.
  */
 data class GenitorFileDto(
-    val name: String,
-    val namespace: String? = null,
-    val manifestsDir: Path = Path.of("manifests"),
-    val catalogFilename: String = "catalog.genitor.kts"
+    val manifestsDir: Path = GenitorFile.DefaultManifestsDir,
+    val catalogScriptFilename: String = GenitorFile.DefaultCatalogScriptFilename
 )

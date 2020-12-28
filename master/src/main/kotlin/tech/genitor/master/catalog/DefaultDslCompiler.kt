@@ -1,11 +1,11 @@
 package tech.genitor.master.catalog
 
 import de.swirtz.ktsrunner.objectloader.KtsObjectLoader
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import tech.genitor.core.CatalogBuilder
 import tech.genitor.core.GenitorFile
 import tech.genitor.core.Node
-import tech.genitor.core.ProjectMetadata
 import tech.genitor.dsl.*
 import java.nio.file.Files
 
@@ -14,14 +14,24 @@ import java.nio.file.Files
  */
 @Component
 class DefaultDslCompiler : DslCompiler {
+    private companion object {
+        /**
+         * Logger.
+         */
+        private val Logger = LoggerFactory.getLogger(DefaultDslCompiler::class.java)
+    }
+
     override fun compile(genitorFile: GenitorFile): List<CatalogBuilder> {
+        val catalogScriptPath = genitorFile.manifestsDir.resolve(genitorFile.catalogScriptFilename).toAbsolutePath()
         val objectLoader = KtsObjectLoader()
-        val catalogBlock = Files.newBufferedReader(genitorFile.catalogPath).use {
+        Logger.debug("Compiling catalog script ($catalogScriptPath)")
+        val catalogBlock = Files.newBufferedReader(catalogScriptPath).use {
             objectLoader.load<CatalogBlock>(it)
         }
+        Logger.debug("Catalog script compiled ($catalogScriptPath)")
         val builderByHostname = builderByHostnameFromGroupBlock(
             groupBlock = catalogBlock.rootGroupBlock,
-            builderByHostname = builderByHostnameFromNodeBlocks(genitorFile.projectMetadata, catalogBlock.nodeBlocks)
+            builderByHostname = builderByHostnameFromNodeBlocks(catalogBlock.nodeBlocks)
         )
         return builderByHostname.values.toList()
     }
@@ -29,15 +39,14 @@ class DefaultDslCompiler : DslCompiler {
     /**
      * Get builder by node hostname from node blocks.
      *
-     * @param projectMetadata Project metadata.
      * @param nodeBlocks Node blocks.
      * @return Builder by node hostname.
      */
-    private fun builderByHostnameFromNodeBlocks(projectMetadata: ProjectMetadata, nodeBlocks: List<NodeBlock>) =
+    private fun builderByHostnameFromNodeBlocks(nodeBlocks: List<NodeBlock>) =
         nodeBlocks
             .map { nodeBlock ->
                 val ensureBlocks = nodeBlock.ensureBlock?.let { listOf(it) } ?: emptyList()
-                nodeBlock.hostname to DslCatalogBuilder(projectMetadata, nodeBlock.node, ensureBlocks)
+                nodeBlock.hostname to DslCatalogBuilder(nodeBlock.node, ensureBlocks)
             }
             .toMap()
 

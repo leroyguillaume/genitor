@@ -33,49 +33,66 @@ class DefaultCatalogCache(
         private val Logger = LoggerFactory.getLogger(DefaultCatalogCache::class.java)
     }
 
-    override fun get(projectMetadata: ProjectMetadata): Catalog? {
-        val projectName = projectMetadata.completeName
-        val subPath = projectName.replace(ProjectMetadata.NamespaceSeparator, "/")
-        val dir = props.catalogsCacheDir.resolve(subPath).toAbsolutePath()
-        Logger.debug("Finding catalog '$projectName' from $dir directory")
-        return if (!Files.isDirectory(dir)) {
-            Logger.debug("$dir is not a directory, no catalog '$projectName' in cache")
-            null
+    /**
+     * Most recent catalog.
+     */
+    private lateinit var lastCatalog: Catalog
+
+    override fun get(): Catalog = if (this::lastCatalog.isInitialized) {
+        lastCatalog
+    } else {
+        val cacheDir = props.cacheDir.toAbsolutePath()
+        Logger.debug("Finding catalog from cache directory ($cacheDir)")
+        if (!Files.isDirectory(cacheDir)) {
+            Logger.error("Unable to load catalog from cache: cache directory is not a directory ($cacheDir)")
+            Catalog()
         } else {
-            Files.list(dir)
+            Files.list(cacheDir)
                 .filter { it.fileName.endsWith(JsonExtension) }
                 .sorted { path1, path2 ->
                     -Files.getLastModifiedTime(path1).compareTo(Files.getLastModifiedTime(path2))
                 }
                 .findFirst()
                 .map { path ->
-                    Logger.debug("${path.toAbsolutePath()} found as cache of catalog '$projectName'")
+                    Logger.debug("Loading catalog from cache ($path)")
                     val catalogJson = Files.newBufferedReader(path).use { it.readText() }
-                    catalogDeserializer.deserialize(catalogJson)
+                    catalogDeserializer.deserialize(catalogJson).apply {
+                        lastCatalog = this
+                        Logger.debug("Catalog loaded from cache ($path)")
+                    }
                 }
                 .orElseGet {
-                    Logger.debug("No cache found for catalog '$projectName'")
-                    null
+                    Logger.debug("No catalog in cache")
+                    Catalog()
                 }
         }
     }
 
+    @Synchronized
     override fun save(catalog: Catalog) {
-        val projectName = catalog.project.metadata.completeName
-        val subPath = projectName.replace(ProjectMetadata.NamespaceSeparator, "/")
-        val dir = props.catalogsCacheDir.resolve(subPath).toAbsolutePath()
-        if (!Files.isDirectory(dir)) {
-            Logger.debug("Creating $dir directories")
-            Files.createDirectories(dir)
-            Logger.debug("Directories $dir created")
+        if (this::lastCatalog.isInitialized && catalog == lastCatalog) {
+            Logger.debug("Catalog is unchanged")
+        } else {
+            lastCatalog = catalog
+            val cacheDir = props.cacheDir.toAbsolutePath()
+            val cacheDirExists = Files.exists(cacheDir)
+            if (cacheDirExists && !Files.isDirectory(cacheDir)) {
+                Logger.error("Unable to save catalog in cache: cache directory is not a directory ($cacheDir)")
+            } else {
+                if (!cacheDirExists) {
+                    Logger.debug("Creating cache directory recursively ($cacheDir)")
+                    Files.createDirectories(cacheDir)
+                    Logger.debug("Cache directory created ($cacheDir)")
+                }
+                val catalogJson = catalogSerializer.serialize(catalog)
+                Logger.debug("Catalog serialized as JSON ('$catalogJson')")
+                val sha1 = sha1Calculator.compute(catalogJson.toByteArray())
+                Logger.debug("Catalog SHA1 computed ('$sha1')")
+                val path = cacheDir.resolve("$sha1$JsonExtension")
+                Logger.debug("Saving catalog in cache ($path)")
+                Files.newBufferedWriter(path).use { it.write(catalogJson) }
+                Logger.debug("Catalog saved in cache ($path)")
+            }
         }
-        val catalogJson = catalogSerializer.serialize(catalog)
-        Logger.debug("Catalog '$projectName' serialized as JSON ('$catalogJson')")
-        val sha1 = sha1Calculator.compute(catalogJson.toByteArray())
-        Logger.debug("SHA1 for catalog '$projectName' computed ('$sha1')")
-        val path = dir.resolve("$sha1$JsonExtension")
-        Logger.debug("Saving catalog '$projectName' to $path")
-        Files.newBufferedWriter(path).use { it.write(catalogJson) }
-        Logger.info("Catalog '$projectName' saved in cache ($path)")
     }
 }

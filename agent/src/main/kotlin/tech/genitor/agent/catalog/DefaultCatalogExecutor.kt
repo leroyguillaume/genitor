@@ -20,7 +20,7 @@ class DefaultCatalogExecutor : CatalogExecutor {
     }
 
     override fun execute(catalog: Catalog): CatalogReport {
-        Logger.debug("Starting execution of catalog")
+        Logger.info("Starting execution of catalog")
         val resourceReports = catalog.graphs.map { graph ->
             graph.resource.ensure().apply {
                 when (this) {

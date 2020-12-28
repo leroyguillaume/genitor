@@ -3,7 +3,10 @@ package tech.genitor.commons.beans
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import tech.genitor.core.*
-import tech.genitor.dto.*
+import tech.genitor.dto.CatalogDto
+import tech.genitor.dto.NodeDto
+import tech.genitor.dto.ResourceDto
+import tech.genitor.dto.ResourceGraphDto
 
 /**
  * Default implementation of JSON catalog deserializer.
@@ -26,8 +29,6 @@ class DefaultJsonCatalogDeserializer(
      */
     @Throws(ResourceInstantiationException::class)
     private fun CatalogDto.toCatalog() = Catalog(
-        project = project.toProject(),
-        node = node.toNode(),
         graphs = graphs.map { it.toResourceGraph() }
     )
 
@@ -40,18 +41,6 @@ class DefaultJsonCatalogDeserializer(
     @Throws(ResourceInstantiationException::class)
     private fun NodeDto.toNode() = Node(
         hostname = hostname
-    )
-
-    /**
-     * Convert DTO to project.
-     *
-     * @return Project.
-     */
-    private fun ProjectDto.toProject() = Project(
-        metadata = ProjectMetadata(
-            name = name,
-            namespace = namespace
-        )
     )
 
     /**

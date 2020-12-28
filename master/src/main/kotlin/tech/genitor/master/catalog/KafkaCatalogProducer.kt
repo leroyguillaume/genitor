@@ -8,6 +8,7 @@ import tech.genitor.commons.beans.NodeHeaderName
 import tech.genitor.core.Catalog
 import tech.genitor.core.CatalogProducer
 import tech.genitor.core.JsonCatalogSerializer
+import tech.genitor.core.Node
 import tech.genitor.master.MasterProperties
 
 /**
@@ -31,13 +32,14 @@ class KafkaCatalogProducer(
         private val Logger = LoggerFactory.getLogger(KafkaCatalogProducer::class.java)
     }
 
-    override fun send(catalog: Catalog) {
+    override fun send(node: Node, catalog: Catalog) {
         val catalogJson = catalogSerializer.serialize(catalog)
-        Logger.debug("Catalog '${catalog.project.metadata.completeName}' serialized as JSON ('$catalogJson')")
+        val hostname = node.hostname
+        Logger.debug("Catalog serialized as JSON ('$catalogJson')")
         val record = ProducerRecord<String, String>(props.kafka.catalogTopic.name, catalogJson).apply {
-            headers().add(NodeHeaderName, catalog.node.hostname.toByteArray())
+            headers().add(NodeHeaderName, hostname.toByteArray())
         }
         kafkaTemplate.send(record)
-        Logger.info("Catalog '${catalog.project.metadata.completeName}' sent on topic '${props.kafka.catalogTopic.name}'")
+        Logger.info("Catalog for node '$hostname' sent on topic '${props.kafka.catalogTopic.name}'")
     }
 }

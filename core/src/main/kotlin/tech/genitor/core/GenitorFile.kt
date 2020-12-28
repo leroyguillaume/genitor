@@ -1,16 +1,27 @@
 package tech.genitor.core
 
 import java.nio.file.Path
+import java.nio.file.Paths
 
 /**
  * Genitor project file.
  *
- * @param projectMetadata Project metadata.
- * @param rootDir Path to project root directory.
- * @param catalogPath Path to catalog DSL script file.
+ * @param manifestsDir Path to manifests directory.
+ * @param catalogScriptFilename Catalog script filename.
  */
 data class GenitorFile(
-    val projectMetadata: ProjectMetadata,
-    val rootDir: Path,
-    val catalogPath: Path
-)
+    val manifestsDir: Path,
+    val catalogScriptFilename: String
+) {
+    companion object {
+        /**
+         * Default catalog script filename.
+         */
+        const val DefaultCatalogScriptFilename = "catalog.genitor.kts"
+
+        /**
+         * Default relative path to manifests directory.
+         */
+        val DefaultManifestsDir = Paths.get("manifests")
+    }
+}

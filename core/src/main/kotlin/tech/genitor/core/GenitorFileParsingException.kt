@@ -27,8 +27,10 @@ sealed class GenitorFileException : RuntimeException() {
      */
     class Validation(
         override val path: Path,
-        override val message: String
-    ) : GenitorFileException()
+        message: String
+    ) : GenitorFileException() {
+        override val message = "Invalid Genitor project file ($path): $message"
+    }
 
     abstract override val message: String
 
