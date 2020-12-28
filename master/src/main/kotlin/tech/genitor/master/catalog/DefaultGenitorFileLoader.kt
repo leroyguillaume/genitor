@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 import tech.genitor.core.GenitorFile
 import tech.genitor.core.GenitorFileException
 import tech.genitor.core.GenitorFileLoader
-import tech.genitor.core.Project
+import tech.genitor.core.ProjectMetadata
 import tech.genitor.dto.GenitorFileDto
 import java.nio.file.Files
 import java.nio.file.Path
@@ -38,10 +38,10 @@ class DefaultGenitorFileLoader(
      */
     private fun check(genitorFilePath: Path, genitorFileDto: GenitorFileDto) {
         val namespace = genitorFileDto.namespace
-        if (namespace != null && !Project.NamespaceRegex.matches(namespace)) {
+        if (namespace != null && !ProjectMetadata.NamespaceRegex.matches(namespace)) {
             throw GenitorFileException.Validation(
                 path = genitorFilePath,
-                message = "Invalid namespace '$namespace' (should match ${Project.NamespaceRegex.pattern})"
+                message = "Invalid namespace '$namespace' (should match ${ProjectMetadata.NamespaceRegex.pattern})"
             )
         }
     }
@@ -55,7 +55,7 @@ class DefaultGenitorFileLoader(
     private fun GenitorFileDto.toGenitorFile(path: Path): GenitorFile {
         val rootDir = path.parent
         return GenitorFile(
-            project = Project(
+            projectMetadata = ProjectMetadata(
                 name = name,
                 namespace = namespace
             ),

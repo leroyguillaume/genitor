@@ -48,8 +48,10 @@ class DefaultJsonCatalogDeserializer(
      * @return Project.
      */
     private fun ProjectDto.toProject() = Project(
-        name = name,
-        namespace = namespace
+        metadata = ProjectMetadata(
+            name = name,
+            namespace = namespace
+        )
     )
 
     /**

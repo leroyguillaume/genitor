@@ -37,7 +37,7 @@ class DefaultCatalogService(
         Logger.debug("Starting deployment")
         val projectDirs = genitorFileScanner.scan(props.deployDir)
         projectDirs.forEach { projectDir ->
-            val projectName = projectDir.project.completeName
+            val projectName = projectDir.projectMetadata.completeName
             Logger.debug("Compiling project '$projectName'")
             val catalogBuilders = dslCompiler.compile(projectDir)
             if (catalogBuilders.isEmpty()) {

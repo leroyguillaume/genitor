@@ -33,9 +33,9 @@ class DefaultCatalogCache(
         private val Logger = LoggerFactory.getLogger(DefaultCatalogCache::class.java)
     }
 
-    override fun get(project: Project): Catalog? {
-        val projectName = project.completeName
-        val subPath = projectName.replace(Project.NamespaceSeparator, "/")
+    override fun get(projectMetadata: ProjectMetadata): Catalog? {
+        val projectName = projectMetadata.completeName
+        val subPath = projectName.replace(ProjectMetadata.NamespaceSeparator, "/")
         val dir = props.catalogsCacheDir.resolve(subPath).toAbsolutePath()
         Logger.debug("Finding catalog '$projectName' from $dir directory")
         return if (!Files.isDirectory(dir)) {
@@ -61,8 +61,8 @@ class DefaultCatalogCache(
     }
 
     override fun save(catalog: Catalog) {
-        val projectName = catalog.project.completeName
-        val subPath = projectName.replace(Project.NamespaceSeparator, "/")
+        val projectName = catalog.project.metadata.completeName
+        val subPath = projectName.replace(ProjectMetadata.NamespaceSeparator, "/")
         val dir = props.catalogsCacheDir.resolve(subPath).toAbsolutePath()
         if (!Files.isDirectory(dir)) {
             Logger.debug("Creating $dir directories")

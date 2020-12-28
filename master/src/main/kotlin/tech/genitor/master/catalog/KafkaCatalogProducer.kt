@@ -33,11 +33,11 @@ class KafkaCatalogProducer(
 
     override fun send(catalog: Catalog) {
         val catalogJson = catalogSerializer.serialize(catalog)
-        Logger.debug("Catalog '${catalog.project.completeName}' serialized as JSON ('$catalogJson')")
+        Logger.debug("Catalog '${catalog.project.metadata.completeName}' serialized as JSON ('$catalogJson')")
         val record = ProducerRecord<String, String>(props.kafka.catalogTopic.name, catalogJson).apply {
             headers().add(NodeHeaderName, catalog.node.hostname.toByteArray())
         }
         kafkaTemplate.send(record)
-        Logger.info("Catalog '${catalog.project.completeName}' sent on topic '${props.kafka.catalogTopic.name}'")
+        Logger.info("Catalog '${catalog.project.metadata.completeName}' sent on topic '${props.kafka.catalogTopic.name}'")
     }
 }

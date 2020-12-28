@@ -7,10 +7,10 @@ interface CatalogCache {
     /**
      * Get most recent catalog.
      *
-     * @param project Project.
+     * @param projectMetadata Project metadata.
      * @return Catalog or null if it does not exist.
      */
-    fun get(project: Project): Catalog?
+    fun get(projectMetadata: ProjectMetadata): Catalog?
 
     /**
      * Save catalog.

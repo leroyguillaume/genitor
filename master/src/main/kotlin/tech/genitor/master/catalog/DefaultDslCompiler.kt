@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 import tech.genitor.core.CatalogBuilder
 import tech.genitor.core.GenitorFile
 import tech.genitor.core.Node
-import tech.genitor.core.Project
+import tech.genitor.core.ProjectMetadata
 import tech.genitor.dsl.*
 import java.nio.file.Files
 
@@ -21,7 +21,7 @@ class DefaultDslCompiler : DslCompiler {
         }
         val builderByHostname = builderByHostnameFromGroupBlock(
             groupBlock = catalogBlock.rootGroupBlock,
-            builderByHostname = builderByHostnameFromNodeBlocks(genitorFile.project, catalogBlock.nodeBlocks)
+            builderByHostname = builderByHostnameFromNodeBlocks(genitorFile.projectMetadata, catalogBlock.nodeBlocks)
         )
         return builderByHostname.values.toList()
     }
@@ -29,16 +29,17 @@ class DefaultDslCompiler : DslCompiler {
     /**
      * Get builder by node hostname from node blocks.
      *
-     * @param project Project.
+     * @param projectMetadata Project metadata.
      * @param nodeBlocks Node blocks.
      * @return Builder by node hostname.
      */
-    private fun builderByHostnameFromNodeBlocks(project: Project, nodeBlocks: List<NodeBlock>) = nodeBlocks
-        .map { nodeBlock ->
-            val ensureBlocks = nodeBlock.ensureBlock?.let { listOf(it) } ?: emptyList()
-            nodeBlock.hostname to DslCatalogBuilder(project, nodeBlock.node, ensureBlocks)
-        }
-        .toMap()
+    private fun builderByHostnameFromNodeBlocks(projectMetadata: ProjectMetadata, nodeBlocks: List<NodeBlock>) =
+        nodeBlocks
+            .map { nodeBlock ->
+                val ensureBlocks = nodeBlock.ensureBlock?.let { listOf(it) } ?: emptyList()
+                nodeBlock.hostname to DslCatalogBuilder(projectMetadata, nodeBlock.node, ensureBlocks)
+            }
+            .toMap()
 
     /**
      * Get builder by node hostname recursively from group blocks.
