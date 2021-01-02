@@ -51,13 +51,13 @@ class CatalogBlock internal constructor() : InsurableBlock() {
      * Create node.
      *
      * @param hostname Hostname.
-     * @param block Function to build resources on node.
+     * @param block Function to build resource graph on node.
      * @return Created node.
      * @throws InvalidHostnameException If hostname is invalid.
      * @throws NodeAlreadyExistsException If node already exists.
      */
     @Throws(DslException::class)
-    fun node(hostname: String, block: EnsureBlock.(Facts) -> Unit = {}): Node {
+    fun node(hostname: String, block: EnsureBlock.(Facts) -> ResourceGraphDsl): Node {
         if (!HostnamePattern.matches(hostname)) {
             throw InvalidHostnameException(hostname)
         }

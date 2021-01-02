@@ -2,10 +2,7 @@ package tech.genitor.agent.catalog
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import tech.genitor.core.Catalog
-import tech.genitor.core.CatalogExecutor
-import tech.genitor.core.CatalogReport
-import tech.genitor.core.ResourceReport
+import tech.genitor.core.*
 import java.time.Duration
 import java.time.LocalDateTime
 
@@ -24,14 +21,7 @@ class DefaultCatalogExecutor : CatalogExecutor {
     override fun execute(catalog: Catalog): CatalogReport {
         val startDate = LocalDateTime.now()
         Logger.info("Starting execution of catalog")
-        val resourceReports = catalog.graphs.map { graph ->
-            graph.resource.ensure().apply {
-                when (this) {
-                    is ResourceReport.Failure -> handleFailure(this)
-                    is ResourceReport.Success -> handleSuccess(this)
-                }
-            }
-        }
+        val resourceReports = catalog.graphs.flatMap { ensure(it) }
         val endDate = LocalDateTime.now()
         val duration = Duration.between(startDate, endDate)
         Logger.info("Catalog executed in ${duration.seconds} seconds")
@@ -44,39 +34,67 @@ class DefaultCatalogExecutor : CatalogExecutor {
     }
 
     /**
+     * Ensure resource.
+     *
+     * @param graph Resource graph.
+     * @return Resource reports.
+     */
+    private fun ensure(graph: ResourceGraph?): List<ResourceReport<*>> = if (graph == null) {
+        emptyList()
+    } else {
+        val report = graph.resource.ensure()
+        listOf(report) + when (report) {
+            is ResourceReport.Failure -> handleFailure(graph, report)
+            is ResourceReport.Success -> handleSuccess(graph, report)
+        }
+    }
+
+    /**
      * Handle changed status.
      *
-     * @param report Resource report.
+     * @param graph Current resource graph node.
+     * @return Resource reports.
      */
-    private fun handleChanged(report: ResourceReport.Success<*>) {
-        Logger.info("Resource '${report.resource.name}' changed")
+    private fun handleChanged(graph: ResourceGraph): List<ResourceReport<*>> {
+        Logger.info("Resource '${graph.resource.name}' changed")
+        return ensure(graph.whenChanged)
     }
 
     /**
      * Handle failure status.
      *
+     * @param graph Current resource graph node.
      * @param report Resource report.
+     * @return Resource reports.
      */
-    private fun handleFailure(report: ResourceReport.Failure) {
-        Logger.error("Resource '${report.resource.name}' failed", report.cause)
+    private fun handleFailure(graph: ResourceGraph, report: ResourceReport.Failure): List<ResourceReport<*>> {
+        Logger.error("Resource '${graph.resource.name}' failed", report.cause)
+        return ensure(graph.whenFailure)
     }
 
     /**
      * Handle success resource report.
      *
+     * @param graph Current resource graph node.
      * @param report Resource report.
+     * @return Resource reports.
      */
-    private fun handleSuccess(report: ResourceReport.Success<*>) = when (report.status) {
-        ResourceReport.Success.Status.Changed -> handleChanged(report)
-        ResourceReport.Success.Status.Unchanged -> handleUnchanged(report)
+    private fun handleSuccess(graph: ResourceGraph, report: ResourceReport.Success<*>): List<ResourceReport<*>> {
+        val reports = when (report.status) {
+            ResourceReport.Success.Status.Changed -> handleChanged(graph)
+            ResourceReport.Success.Status.Unchanged -> handleUnchanged(graph)
+        }
+        return reports + ensure(graph.whenSuccess)
     }
 
     /**
      * Handle unchanged status.
      *
-     * @param report Resource report.
+     * @param graph Current resource graph node.
+     * @return Resource reports.
      */
-    private fun handleUnchanged(report: ResourceReport.Success<*>) {
-        Logger.info("Resource '${report.resource.name}' unchanged")
+    private fun handleUnchanged(graph: ResourceGraph): List<ResourceReport<*>> {
+        Logger.info("Resource '${graph.resource.name}' unchanged")
+        return ensure(graph.whenUnchanged)
     }
 }

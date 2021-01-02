@@ -34,6 +34,7 @@ dependencies {
 
     // Kotlin
     implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("reflect"))
 
     // KtsRunner
     implementation("de.swirtz:ktsRunner:0.0.9")

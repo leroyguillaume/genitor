@@ -14,16 +14,16 @@ abstract class InsurableBlock {
     /**
      * Ensure block.
      */
-    val ensureBlock get() = if (this::_ensureBlock.isInitialized) EnsureBlock(_ensureBlock) else null
+    val ensureBlock get() = if (this::_ensureBlock.isInitialized) _ensureBlock else null
 
     /**
      * Create ensure block.
      *
-     * @param block Function to build resources.
+     * @param block Function to build resource graph.
      * @throws EnsureBlockAlreadyDefinedException If ensure block is already defined.
      */
     @Throws(EnsureBlockAlreadyDefinedException::class)
-    fun ensure(block: EnsureBlock.(Facts) -> Unit) {
+    fun ensure(block: EnsureBlock.(Facts) -> ResourceGraphDsl) {
         if (this::_ensureBlock.isInitialized) {
             throw EnsureBlockAlreadyDefinedException()
         }

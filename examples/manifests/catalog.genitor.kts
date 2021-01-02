@@ -7,6 +7,11 @@ catalog {
         symlink(
             path = Paths.get("/tmp/test"),
             target = Paths.get("/etc/hosts")
+        ).whenSuccess(
+            symlink(
+                path = Paths.get("/tmp/test2"),
+                target = Paths.get("/tmp/test")
+            )
         )
     }
 }

@@ -1,6 +1,9 @@
 package tech.genitor.master.catalog
 
-import tech.genitor.core.*
+import tech.genitor.core.Catalog
+import tech.genitor.core.CatalogBuilder
+import tech.genitor.core.Facts
+import tech.genitor.core.Node
 import tech.genitor.dsl.EnsureBlock
 
 /**
@@ -14,8 +17,7 @@ class DslCatalogBuilder internal constructor(
     private val ensureBlocks: List<EnsureBlock>
 ) : CatalogBuilder {
     override fun build(facts: Facts): Catalog {
-        val resourceHolders = ensureBlocks.flatMap { it.build(facts).resourceHolders }
-        val graphs = resourceHolders.map { ResourceGraph(it.resource) }
+        val graphs = ensureBlocks.map { it.build(facts) }
         return Catalog(
             graphs = graphs
         )

@@ -1,51 +1,20 @@
 package tech.genitor.dsl
 
 import tech.genitor.core.Facts
-import tech.genitor.core.Resource
 
 /**
  * Ensure block.
  *
- * @param fn Function to build resources.
+ * @param fn Function to build resource graph.
  */
 class EnsureBlock internal constructor(
-    private val fn: EnsureBlock.(Facts) -> Unit
+    private val fn: EnsureBlock.(Facts) -> ResourceGraphDsl
 ) {
     /**
-     * Resource holders.
-     */
-    private val _resourceHolders = mutableListOf<ResourceHolder>()
-
-    /**
-     * Resource holders.
-     */
-    val resourceHolders get() = _resourceHolders.map { it.copy() }
-
-    /**
-     * Copy constructor.
-     *
-     * @param ensureBlock Ensure block to copy.
-     */
-    internal constructor(ensureBlock: EnsureBlock) : this(ensureBlock.fn) {
-        _resourceHolders.addAll(ensureBlock.resourceHolders)
-    }
-
-    /**
-     * Create resource holder.
-     *
-     * @param resource Resource.
-     */
-    fun add(resource: Resource) = ResourceHolder(resource).apply {
-        _resourceHolders.add(this)
-    }
-
-    /**
-     * Build resources from fact.
-     *
-     * This method returns a copy of this object applying function to build resource.
+     * Build resource graph.
      *
      * @param facts Node facts.
-     * @return Built ensure block.
+     * @return Resource graph.
      */
-    fun build(facts: Facts) = EnsureBlock(this).apply { fn(facts) }
+    fun build(facts: Facts) = fn(facts).build()
 }

@@ -84,6 +84,9 @@ class DefaultJsonCatalogDeserializer(
     @Throws(ResourceInstantiationException::class)
     private fun ResourceGraphDto.toResourceGraph(): ResourceGraph = ResourceGraph(
         resource = resource.toResource(),
-        next = next.map { it.toResourceGraph() }
+        whenSuccess = whenSuccess?.toResourceGraph(),
+        whenChanged = whenChanged?.toResourceGraph(),
+        whenUnchanged = whenUnchanged?.toResourceGraph(),
+        whenFailure = whenFailure?.toResourceGraph(),
     )
 }

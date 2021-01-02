@@ -56,6 +56,9 @@ class DefaultJsonCatalogSerializer(
      */
     private fun ResourceGraph.toDto(): ResourceGraphDto = ResourceGraphDto(
         resource = resource.toDto(),
-        next = next.map { it.toDto() }
+        whenSuccess = whenSuccess?.toDto(),
+        whenChanged = whenChanged?.toDto(),
+        whenUnchanged = whenUnchanged?.toDto(),
+        whenFailure = whenFailure?.toDto(),
     )
 }
