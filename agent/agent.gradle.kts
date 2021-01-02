@@ -45,13 +45,6 @@ dependencies {
 
     // Genitor
     runtimeOnly(project(":$rootProjectName-core-resources"))
-
-    /***********************
-     * Annotation processor
-     ***********************/
-
-    // Spring
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 }
 
 tasks {

@@ -9,7 +9,6 @@ plugins {
 
     // Spring
     id("org.springframework.boot")
-    id("io.spring.dependency-management")
 }
 
 application {
@@ -24,6 +23,7 @@ dependencies {
      ***********************/
 
     // Genitor
+    implementation(platform(project(":$rootProjectName-bom")))
     implementation(project(":$rootProjectName-core"))
     implementation(project(":$rootProjectName-dto"))
     implementation(project(":$rootProjectName-dsl"))
@@ -58,13 +58,6 @@ dependencies {
 
     // PostgreSQL
     runtimeOnly("org.postgresql:postgresql")
-
-    /***********************
-     * Annotation processor
-     ***********************/
-
-    // Spring
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 }
 
 tasks {

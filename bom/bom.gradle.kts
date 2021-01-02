@@ -19,7 +19,7 @@ dependencies {
         api(project(":$rootProjectName-dto"))
         api(project(":$rootProjectName-dsl"))
 
-        // Spring Kafka
+        // Spring
         api("org.springframework.kafka:spring-kafka:2.6.3")
     }
 }

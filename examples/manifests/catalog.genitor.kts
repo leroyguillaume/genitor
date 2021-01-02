@@ -1,5 +1,3 @@
-package monitoring.manifests
-
 import tech.genitor.dsl.catalog
 import tech.genitor.resources.file.symlink
 import java.nio.file.Paths
