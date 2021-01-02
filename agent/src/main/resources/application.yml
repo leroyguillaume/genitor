@@ -3,6 +3,8 @@ genitor:
   hostname: ${GENITOR_HOSTNAME}
   # Number of minutes between two facts collection
   collect-facts-every: ${GENITOR_COLLECT_FACTS_EVERY:5}
+  # Number of minutes between two catalog execution
+  execute-catalog-every: ${GENITOR_EXECUTE_CATALOG_EVERY:5}
   # Path to directory in which save catalog
   cache-dir: ${GENITOR_CACHE_DIR:cache}
   server:

@@ -10,6 +10,7 @@ import java.nio.file.Path
  *
  * @param hostname Hostname of machine.
  * @param collectFactsEvery Number of minutes between two facts collection.
+ * @param executeCatalogEvery Number of minutes between two catalog execution.
  * @param cacheDir Path to directory in which save catalog.
  * @param server Server properties.
  * @param kafka Kafka properties.
@@ -19,6 +20,7 @@ import java.nio.file.Path
 data class AgentProperties(
     val hostname: String,
     val collectFactsEvery: Int,
+    val executeCatalogEvery: Int,
     val cacheDir: Path,
     override val server: GenitorProperties.Server,
     override val kafka: Kafka
