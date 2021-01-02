@@ -6,6 +6,8 @@ import tech.genitor.core.Catalog
 import tech.genitor.core.CatalogExecutor
 import tech.genitor.core.CatalogReport
 import tech.genitor.core.ResourceReport
+import java.time.Duration
+import java.time.LocalDateTime
 
 /**
  * Default implementation of catalog executor.
@@ -20,6 +22,7 @@ class DefaultCatalogExecutor : CatalogExecutor {
     }
 
     override fun execute(catalog: Catalog): CatalogReport {
+        val startDate = LocalDateTime.now()
         Logger.info("Starting execution of catalog")
         val resourceReports = catalog.graphs.map { graph ->
             graph.resource.ensure().apply {
@@ -29,7 +32,13 @@ class DefaultCatalogExecutor : CatalogExecutor {
                 }
             }
         }
+        val endDate = LocalDateTime.now()
+        val duration = Duration.between(startDate, endDate)
+        Logger.info("Catalog executed in ${duration.seconds} seconds")
         return CatalogReport(
+            executionStartDate = startDate,
+            executionEndDate = endDate,
+            executionDuration = duration,
             resourceReports = resourceReports
         )
     }

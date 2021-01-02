@@ -48,7 +48,7 @@ class DefaultCatalogCache(
             Catalog()
         } else {
             Files.list(cacheDir)
-                .filter { it.fileName.endsWith(JsonExtension) }
+                .filter { it.fileName.toString().endsWith(JsonExtension) }
                 .sorted { path1, path2 ->
                     -Files.getLastModifiedTime(path1).compareTo(Files.getLastModifiedTime(path2))
                 }
